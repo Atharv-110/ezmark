@@ -21,7 +21,7 @@ const AdminLogin = () => {
       navigate("/admin/dashboard");
     }
   };
-  const handleRegistration = (e) => {
+  const handleRegistration = async (e) => {
     e.preventDefault();
     if (register) {
       // code for api fetch and check

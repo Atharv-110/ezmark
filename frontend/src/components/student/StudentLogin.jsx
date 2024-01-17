@@ -7,30 +7,41 @@ const StudentLogin = () => {
 
   const navigate = useNavigate();
   const [register, setRegister] = useState({
-    name: "",
     email: "",
-    mobile: "",
+    name: "",
+    mobile_number: "",
     password: "",
+    password2: "",
   });
-  console.log(register);
+
   const handleLogin = (e) => {
     e.preventDefault();
     if (login) {
-
       // code for api fetch and check
 
       alert("Login Success");
       navigate("/student/dashboard");
     }
   };
-  const handleRegistration = (e) => {
+  const handleRegistration = async (e) => {
     e.preventDefault();
-    if (register) {
+    try {
+      const res = await fetch("http://127.0.0.1:8000/api/register/student/", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(register),
+      });
 
-      // code for api fetch and check
+      if (!res.ok) {
+        throw new Error(res.statusText);
+      }
 
       alert("Registration Done!");
-      setType("login")
+      setType("login");
+    } catch (error) {
+      console.error(error);
     }
   };
   return (

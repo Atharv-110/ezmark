@@ -138,8 +138,8 @@ const LoginForm = ({
                 id="mobileNum"
                 name="mobileNum"
                 type="number"
-                value={register.mobile}
-                onChange={(e) => setRegister({ ...register, mobile: e.target.value })}
+                value={register.mobile_number}
+                onChange={(e) => setRegister({ ...register, mobile_number: e.target.value })}
                 placeholder="Enter your mobile number"
                 required
                 className="form_input"
@@ -151,7 +151,18 @@ const LoginForm = ({
               <input
                 value={register.password}
                 onChange={(e) => setRegister({ ...register, password: e.target.value })}
-                type="text"
+                type="password"
+                placeholder="Enter your Password"
+                required
+                className="form_input"
+              />
+            </label>
+            <label>
+              <span>Confirm Password</span>
+              <input
+                value={register.password2}
+                onChange={(e) => setRegister({ ...register, password2: e.target.value })}
+                type="password"
                 placeholder="Enter your Password"
                 required
                 className="form_input"
