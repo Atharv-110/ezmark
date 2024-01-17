@@ -1,0 +1,62 @@
+.App {
+  @apply h-screen bg-primary-white text-primary-black;
+}
+
+/* common css */
+
+.page {
+}
+
+.transition-effect {
+  @apply ease-in-out duration-300;
+}
+
+.btn {
+  @apply bg-primary-black border-2 border-transparent text-primary-white rounded-xl hover:bg-transparent hover:text-primary-black hover:border-2 hover:border-primary-black transition-effect py-2 px-4;
+}
+
+.btn_bordered {
+  @apply bg-transparent border-2 border-primary-black text-primary-black rounded-xl hover:bg-primary-black hover:text-primary-white hover:border-2 hover:border-transparent transition-effect py-2 px-4;
+}
+
+.container {
+  @apply flex items-center justify-center;
+}
+
+.flex-center {
+  @apply flex justify-center items-center;
+}
+
+.flex-start {
+  @apply flex justify-start items-start;
+}
+
+.flex-end {
+  @apply flex justify-end items-center;
+}
+
+.flex-between {
+  @apply flex justify-between items-center;
+}
+
+/* form classes */
+
+.form_input {
+  @apply block w-full bg-primary-white rounded-lg mt-1 p-3 outline-0 placeholder:font-normal;
+}
+
+.panel_section {
+  @apply m-4 p-4;
+}
+
+.metric_card {
+  @apply bg-primary-black text-primary-white;
+}
+
+.metric_card:nth-child(3n) {
+  @apply bg-gray-darker text-primary-white;
+}
+
+.metric_card:nth-child(4n) {
+  @apply bg-gray-dark text-primary-white
+}

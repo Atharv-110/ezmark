@@ -1,0 +1,24 @@
+import "./App.css";
+import { Routes, Route } from "react-router-dom";
+import RolePage from "./components/core/RolePage";
+import AdminLogin from "./components/admin/AdminLogin";
+import StudentLogin from "./components/student/StudentLogin";
+import AdminDashboard from "./components/admin/AdminDashboard";
+import Navbar from "./components/core/Navbar";
+import StudentDashboard from "./components/student/StudentDashboard";
+
+function App() {
+  return (
+    <main className="App">
+      <Routes>
+        <Route path="/" element={<RolePage />} />
+        <Route path="/admin/login" element={<AdminLogin />} />
+        <Route path="/student/login" element={<StudentLogin />} />
+        <Route path="/admin/dashboard" element={<AdminDashboard />} />
+        <Route path="/student/dashboard" element={<StudentDashboard />} />
+      </Routes>
+    </main>
+  );
+}
+
+export default App;
