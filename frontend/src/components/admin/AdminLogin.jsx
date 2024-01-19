@@ -11,12 +11,16 @@ const AdminLogin = () => {
     email: "",
     mobile: "",
     password: "",
-    password2: ""
+    password2: "",
   });
+
+  // console.log(detailState.setDetail);
   const handleLogin = (e) => {
     e.preventDefault();
     if (login) {
       // code for api fetch and check
+      
+      localStorage.setItem("role", "admin");
       alert("Login Success");
       navigate("/admin/dashboard");
     }

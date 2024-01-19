@@ -1,4 +1,4 @@
-import { useState, useMemo } from "react";
+import { useState, useMemo, useEffect } from "react";
 import {
   Table,
   TableHeader,
@@ -13,9 +13,9 @@ import {
 import Calendar from "react-calendar";
 import "react-calendar/dist/Calendar.css";
 
-import { users } from "./data";
-
-const AttendanceManagement = () => {
+import { users } from "../admin/data";
+const AttendanceRecord = () => {
+  const [calDate, setCalDate] = useState(new Date());
   const [page, setPage] = useState(1);
   const rowsPerPage = 10;
 
@@ -29,34 +29,8 @@ const AttendanceManagement = () => {
   }, [page, users]);
 
   return (
-    <div className="w-full flex-col-reverse gap-y-5 md:flex-row flex md:justify-between  items-start">
-      <div className="w-full md:w-[calc(100%-290px)] lg:w-[calc(100%-400px)] flex-center flex-col gap-10">
-        <form className="w-full flex items-stretch justify-center">
-          <input
-            type="text"
-            placeholder="Search by name or roll number"
-            // value={searchText}
-            // onChange={handleSearchChange}
-            required
-            className="w-full p-3 px-4 shadow-lg bg-white lg:shadow-none rounded-l-md outline-none border-2 focus:border-r-0 border-transparent focus:border-2 focus:border-primary-black text-sm font-medium"
-          />
-          <button className="btn rounded-l-none">
-            <svg
-              xmlns="http://www.w3.org/2000/svg"
-              fill="none"
-              viewBox="0 0 24 24"
-              strokeWidth={1}
-              stroke="currentColor"
-              className="w-7 h-7"
-            >
-              <path
-                strokeLinecap="round"
-                strokeLinejoin="round"
-                d="m21 21-5.197-5.197m0 0A7.5 7.5 0 1 0 5.196 5.196a7.5 7.5 0 0 0 10.607 10.607Z"
-              />
-            </svg>
-          </button>
-        </form>
+    <div className="w-full flex-col-reverse gap-y-5 md:flex-row flex md:justify-between items-start">
+      <div className="w-full md:w-[calc(100%-290px)] lg:w-[calc(100%-400px)] flex-center flex-col">
         <Table
           aria-label="Example table with client side pagination"
           bottomContent={
@@ -78,7 +52,7 @@ const AttendanceManagement = () => {
           classNames={{
             base: "",
             wrapper: "min-h-[222px] bg-white shadow-lg rounded-md",
-            th: "bg-primary-black text-primary-white rounded-none",
+            th: "bg-primary-black text-primary-white rounded-none"
           }}
         >
           <TableHeader>
@@ -102,10 +76,10 @@ const AttendanceManagement = () => {
         id="calendar"
         className="w-full flex-center md:w-[280px] lg:w-[350px]"
       >
-        <Calendar />
+        <Calendar onChange={setCalDate} value={calDate} />
       </div>
     </div>
   );
 };
 
-export default AttendanceManagement;
+export default AttendanceRecord;

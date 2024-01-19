@@ -1,5 +1,5 @@
 .App {
-  @apply h-screen bg-primary-white text-primary-black;
+  @apply absolute w-full min-h-screen md:px-[2%] lg:px-[3%] bg-primary-white text-primary-black;
 }
 
 /* common css */
@@ -7,16 +7,27 @@
 .page {
 }
 
+.navbar_glass {
+  @apply bg-white shadow-sm bg-opacity-15 bg-clip-padding backdrop-filter backdrop-blur-[5px];
+}
+
 .transition-effect {
   @apply ease-in-out duration-300;
 }
 
 .btn {
-  @apply bg-primary-black border-2 border-transparent text-primary-white rounded-xl hover:bg-transparent hover:text-primary-black hover:border-2 hover:border-primary-black transition-effect py-2 px-4;
+  @apply bg-primary-black border-2 border-transparent text-primary-white rounded-md hover:bg-transparent hover:text-primary-black hover:border-2 hover:border-primary-black transition-effect py-2 px-4;
+}
+.toggle_btn {
+  @apply bg-primary-black text-xs px-[5px] md:text-base md:w-[30%] border-2 border-transparent text-primary-white rounded-md py-2 md:px-4;
+}
+
+.toggle_btn_bordered {
+  @apply bg-transparent text-xs px-[5px] md:text-base md:w-[30%] border-2 border-primary-black text-primary-black rounded-md py-2 md:px-4;
 }
 
 .btn_bordered {
-  @apply bg-transparent border-2 border-primary-black text-primary-black rounded-xl hover:bg-primary-black hover:text-primary-white hover:border-2 hover:border-transparent transition-effect py-2 px-4;
+  @apply bg-transparent border-2 border-primary-black text-primary-black rounded-md hover:bg-primary-black hover:text-primary-white hover:border-2 hover:border-transparent transition-effect py-2 px-4;
 }
 
 .container {
@@ -42,21 +53,43 @@
 /* form classes */
 
 .form_input {
-  @apply block w-full bg-primary-white rounded-lg mt-1 p-3 outline-0 placeholder:font-normal;
+  @apply block w-full bg-primary-white rounded-md mt-1 p-3 outline-0 placeholder:font-normal;
 }
 
 .panel_section {
-  @apply m-4 p-4;
+  @apply my-4 py-4;
 }
 
 .metric_card {
   @apply bg-primary-black text-primary-white;
 }
 
-.metric_card:nth-child(3n) {
+.metric_card:nth-child(2n) {
   @apply bg-gray-darker text-primary-white;
 }
 
-.metric_card:nth-child(4n) {
-  @apply bg-gray-dark text-primary-white
+.metric_card:nth-child(3n) {
+  @apply bg-gray-dark text-primary-white;
+}
+
+/* calendar css */
+
+#calendar .react-calendar {
+  @apply p-2 border-none shadow-lg rounded-md text-primary-black font-medium;
+}
+
+#calendar .react-calendar__tile--now {
+  @apply text-primary-white bg-primary-black;
+}
+
+#calendar button {
+  @apply hover:bg-gray-dark hover:text-primary-white active:bg-primary-white active:text-primary-black;
+}
+
+#calendar .react-calendar__tile--active {
+  @apply bg-green-500;
+}
+
+#calendar .react-calendar__month-view__days__day--weekend {
+  @apply text-red-500;
 }

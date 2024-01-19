@@ -12,7 +12,7 @@ const LoginForm = ({
   handleRegistration,
 }) => {
   return (
-    <div className="w-[350px] bg-white p-8 rounded-2xl shadow-lg text-primary-black font-medium">
+    <div className="w-full md:w-[600px] mx-auto bg-white p-8 rounded-lg shadow-lg text-primary-black font-medium">
       <p className="flex-center">
         {role === "student" ? (
           <svg
@@ -51,10 +51,7 @@ const LoginForm = ({
           <h1 className="text-xl capitalize font-medium text-center mb-4">
             {role} Login
           </h1>
-          <form
-            onSubmit={handleLogin}
-            className="flex flex-col gap-6"
-          >
+          <form onSubmit={handleLogin} className="flex flex-col gap-4">
             <label>
               <span>Email</span>
 
@@ -83,14 +80,17 @@ const LoginForm = ({
                 className="form_input"
               />
             </label>
-            <button type="submit" className="btn bg-primary-black" >Login</button>
-            <div className="flex-between">
-              <button className="btn_bordered">Forgot Password</button>
-              <button
-                onClick={() => setType("signup")}
-                className="btn_bordered"
-              >
-                Sign Up
+            <button className="underline text-right text-sm text-gray-darker hover:text-primary-black transition-effect">
+              Forgot Password?
+            </button>
+
+            <button type="submit" className="btn mt-2 bg-primary-black">
+              Login
+            </button>
+            <div className="flex-center gap-1">
+              <h1>Don&apos;t have an account ?</h1>
+              <button onClick={() => setType("signup")} className="underline">
+                Create account
               </button>
             </div>
           </form>
@@ -100,10 +100,7 @@ const LoginForm = ({
           <h1 className="text-xl capitalize font-medium text-center mb-4">
             {role} Registration
           </h1>
-          <form
-            onSubmit={handleRegistration}
-            className="flex flex-col gap-3"
-          >
+          <form onSubmit={handleRegistration} className="flex flex-col gap-4">
             <label>
               <span>Name</span>
               <input
@@ -111,7 +108,9 @@ const LoginForm = ({
                 name="name"
                 type="text"
                 value={register.name}
-                onChange={(e) => setRegister({ ...register, name: e.target.value })}
+                onChange={(e) =>
+                  setRegister({ ...register, name: e.target.value })
+                }
                 placeholder="Enter your name"
                 required
                 className="form_input"
@@ -125,7 +124,9 @@ const LoginForm = ({
                 name="email"
                 type="email"
                 value={register.email}
-                onChange={(e) => setRegister({ ...register, email: e.target.value })}
+                onChange={(e) =>
+                  setRegister({ ...register, email: e.target.value })
+                }
                 placeholder="Enter your email"
                 required
                 className="form_input"
@@ -139,39 +140,52 @@ const LoginForm = ({
                 name="mobileNum"
                 type="number"
                 value={register.mobile_number}
-                onChange={(e) => setRegister({ ...register, mobile_number: e.target.value })}
+                onChange={(e) =>
+                  setRegister({ ...register, mobile_number: e.target.value })
+                }
                 placeholder="Enter your mobile number"
                 required
                 className="form_input"
               />
             </label>
-
-            <label>
-              <span>Password</span>
-              <input
-                value={register.password}
-                onChange={(e) => setRegister({ ...register, password: e.target.value })}
-                type="password"
-                placeholder="Enter your Password"
-                required
-                className="form_input"
-              />
-            </label>
-            <label>
-              <span>Confirm Password</span>
-              <input
-                value={register.password2}
-                onChange={(e) => setRegister({ ...register, password2: e.target.value })}
-                type="password"
-                placeholder="Enter your Password"
-                required
-                className="form_input"
-              />
-            </label>
-            <button type="submit" className="btn bg-primary-black">Register</button>
-            <div className="flex-between">
-              <button onClick={() => setType("login")} className="btn_bordered">
-                Have an account?
+            <div className="md:flex gap-6 justify-between items-center mb-3">
+              <label className="w-1/2">
+                <span>Password</span>
+                <input
+                  value={register.password}
+                  onChange={(e) =>
+                    setRegister({ ...register, password: e.target.value })
+                  }
+                  type="password"
+                  placeholder="Enter your Password"
+                  required
+                  className="form_input"
+                />
+              </label>
+              <label className="w-1/2">
+                <span>Confirm Password</span>
+                <input
+                  value={register.password2}
+                  onChange={(e) =>
+                    setRegister({ ...register, password2: e.target.value })
+                  }
+                  type="password"
+                  placeholder="Enter your Password"
+                  required
+                  className="form_input"
+                />
+              </label>
+            </div>
+            <button type="submit" className="btn bg-primary-black">
+              Register
+            </button>
+            <div className="flex-center gap-1">
+              <h1>Already have an account ? </h1>
+              <button
+                onClick={() => setType("login")}
+                className="underline text-right text-primary-black"
+              >
+                Login
               </button>
             </div>
           </form>

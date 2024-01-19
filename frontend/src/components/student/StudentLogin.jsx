@@ -1,6 +1,8 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import LoginForm from "../core/LoginForm";
+import toast from "react-hot-toast";
+
 const StudentLogin = () => {
   const [login, setLogin] = useState({ email: "", password: "" });
   const [type, setType] = useState("login");
@@ -34,14 +36,41 @@ const StudentLogin = () => {
         body: JSON.stringify(register),
       });
 
-      if (!res.ok) {
-        throw new Error(res.statusText);
+      if (res.ok) {
+        toast.success("Registration Done!");
       }
 
-      alert("Registration Done!");
+      if (!res.ok) {
+        const errorData = await res.json();
+        if (errorData.errors) {
+          if (errorData.errors.non_field_errors) {
+            toast.error(
+              errorData.errors.non_field_errors[0] ===
+                "Password and Confirm Password don't match"
+                ? "Confirm Password did't Match"
+                : ""
+            );
+          }
+          if (errorData.errors.email[0]) {
+            toast.error(
+              errorData.errors.email[0] ===
+                "user with this Email already exists."
+                ? "User Already Exist"
+                : ""
+            );
+          }
+        }
+      }
       setType("login");
+      setRegister({
+        email: "",
+        name: "",
+        mobile_number: "",
+        password: "",
+        password2: "",
+      });
     } catch (error) {
-      console.error(error);
+      // console.error(error);
     }
   };
   return (

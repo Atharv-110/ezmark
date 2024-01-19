@@ -11,8 +11,14 @@
     "host": "vite --host"
   },
   "dependencies": {
+    "@nextui-org/react": "^2.2.9",
+    "framer-motion": "^10.18.0",
     "react": "^18.2.0",
+    "react-calendar": "^4.8.0",
     "react-dom": "^18.2.0",
+    "react-hot-toast": "^2.4.1",
+    "react-qr-code": "^2.0.12",
+    "react-qr-scanner": "^1.0.0-alpha.11",
     "react-router-dom": "^6.21.2"
   },
   "devDependencies": {

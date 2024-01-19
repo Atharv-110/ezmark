@@ -33,8 +33,8 @@ const CurrentDateTimeCard = () => {
   };
 
   return (
-    <div className="w-fit flex flex-col p-4 gap-2 bg-white rounded-xl shadow-lg">
-      <div className="w-full flex items-center justify-between gap-1">
+    <div className="h-full flex flex-col justify-between p-6 gap-2 bg-white rounded-md shadow-lg">
+      <div className="w-full flex items-center gap-4">
         {time.hours >= 18 ? (
           <svg
             xmlns="http://www.w3.org/2000/svg"
@@ -42,7 +42,7 @@ const CurrentDateTimeCard = () => {
             viewBox="0 0 24 24"
             strokeWidth={1}
             stroke="currentColor"
-            className="w-12 h-12"
+            className="w-12 h-12 md:w-16 md:h-16"
           >
             <path
               strokeLinecap="round"
@@ -57,7 +57,7 @@ const CurrentDateTimeCard = () => {
             viewBox="0 0 24 24"
             strokeWidth={1}
             stroke="currentColor"
-            className="w-12 h-12"
+            className="w-12 h-12 md:w-16 md:h-16"
           >
             <path
               strokeLinecap="round"
@@ -66,15 +66,32 @@ const CurrentDateTimeCard = () => {
             />
           </svg>
         )}
-        <h1 className="font-bold text-xl text-gray-darker">
+        <h1 className="font-bold text-2xl text-gray-dark">
           <span>{convertToTwoDigit(time.hours)}:</span>
           <span>{convertToTwoDigit(time.minutes)}:</span>
           <span>{convertToTwoDigit(time.seconds)}</span>
           <span>{time.hours >= 12 ? " PM" : " AM"}</span>
         </h1>
       </div>
-      <div className="text-xl font-bold">
-        <h1 className="text-gray-darker">Today:</h1>
+      <div className="hidden md:block text-3xl font-bold">
+        <h1 className="text-xl font-semibold text-gray-dark">Today</h1>
+        <h1>
+          {time.day}
+          {time.day >= 4
+            ? "th"
+            : time.day == 1
+            ? "st"
+            : time.day == 2
+            ? "nd"
+            : time.day == 3
+            ? "rd"
+            : ""}
+          <span> {time.month}</span>
+        </h1>
+        <h1>{time.year}</h1>
+      </div>
+      <div className="md:hidden text-xl font-bold">
+        <h1 className="">Today:</h1>
         <h1>
           {time.day}
           {time.day >= 4
