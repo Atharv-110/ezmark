@@ -73,6 +73,13 @@ class Admin(User):
 class Student(User):
     roll_number = models.AutoField(primary_key=True)
 
+class PendingRequest(User):
+    STATUS_CHOICES = [
+        ('Decline', 'Decline'),
+        ('Approve', 'Approve'),
+    ]
+    status = models.CharField(max_length = 7, choices = STATUS_CHOICES, default = "Absent")
+
 class Attendance(models.Model):
     attendance_id = models.AutoField(primary_key=True)
     student = models.ForeignKey(Student, on_delete=models.CASCADE)
@@ -81,5 +88,5 @@ class Attendance(models.Model):
         ('Present', 'Present'),
         ('Absent', 'Absent'),
     ]
-    status = models.CharField(max_length=7, choices=STATUS_CHOICES)
+    status = models.CharField(max_length=7, choices=STATUS_CHOICES, default="Absent")
     created_at = models.DateTimeField(auto_now_add=True)
