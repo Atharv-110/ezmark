@@ -4,7 +4,6 @@ import RolePage from "./components/core/RolePage";
 import AdminLogin from "./components/admin/AdminLogin";
 import StudentLogin from "./components/student/StudentLogin";
 import AdminDashboard from "./components/admin/AdminDashboard";
-import Navbar from "./components/core/Navbar";
 import StudentDashboard from "./components/student/StudentDashboard";
 import GenerateQRPage from "./components/student/GenerateQR";
 import ScanQRPage from "./components/student/ScanQR";

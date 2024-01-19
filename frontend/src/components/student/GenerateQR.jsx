@@ -55,9 +55,6 @@ const GenerateQRPage = () => {
             <h1 className="text-xl md:text-2xl text-center">Generating QR in <span className="font-semibold">{count}</span></h1>
           )}
         </div>
-        {/* <button onClick={() => setCount((count) => count + 1)} className="btn">
-          Generate
-        </button> */}
       </section>
     </section>
   );
