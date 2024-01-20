@@ -10,9 +10,13 @@ const LoginForm = ({
   register,
   setRegister,
   handleRegistration,
+  forgetEmail,
+  setForgetEmail,
+  handleForgetPassword
 }) => {
+  const [forgot, setForgot] = useState(false);
   return (
-    <div className="w-full md:w-[600px] mx-auto bg-white p-8 rounded-lg shadow-lg text-primary-black font-medium">
+    <div className="w-full max-sm:mx-[2%] md:w-[600px] mx-auto bg-white p-4 md:p-8 rounded-lg shadow-lg text-primary-black font-medium">
       <p className="flex-center">
         {role === "student" ? (
           <svg
@@ -46,7 +50,7 @@ const LoginForm = ({
           </svg>
         )}
       </p>
-      {type === "login" ? (
+      {type === "login" && !forgot ? (
         <>
           <h1 className="text-xl capitalize font-medium text-center mb-4">
             {role} Login
@@ -80,7 +84,10 @@ const LoginForm = ({
                 className="form_input"
               />
             </label>
-            <button className="underline text-right text-sm text-gray-darker hover:text-primary-black transition-effect">
+            <button
+              onClick={() => setForgot(true)}
+              className="underline text-right text-sm text-gray-darker hover:text-primary-black transition-effect"
+            >
               Forgot Password?
             </button>
 
@@ -95,7 +102,7 @@ const LoginForm = ({
             </div>
           </form>
         </>
-      ) : (
+      ) : !forgot ? (
         <>
           <h1 className="text-xl capitalize font-medium text-center mb-4">
             {role} Registration
@@ -148,8 +155,8 @@ const LoginForm = ({
                 className="form_input"
               />
             </label>
-            <div className="md:flex gap-6 justify-between items-center mb-3">
-              <label className="w-1/2">
+            <div className="md:flex gap-5 justify-between items-center mb-3">
+              <label className="md:w-1/2">
                 <span>Password</span>
                 <input
                   value={register.password}
@@ -162,7 +169,7 @@ const LoginForm = ({
                   className="form_input"
                 />
               </label>
-              <label className="w-1/2">
+              <label className="md:w-1/2">
                 <span>Confirm Password</span>
                 <input
                   value={register.password2}
@@ -186,6 +193,38 @@ const LoginForm = ({
                 className="underline text-right text-primary-black"
               >
                 Login
+              </button>
+            </div>
+          </form>
+        </>
+      ) : (
+        <>
+          <h1 className="text-xl capitalize font-medium text-center mb-4">
+            {role} Forget Password
+          </h1>
+          <form onSubmit={handleForgetPassword} className="flex flex-col gap-4">
+            <label>
+              <span>Registered Email</span>
+
+              <input
+                id="email"
+                name="email"
+                type="email"
+                value={forgetEmail}
+                onChange={(e) => setForgetEmail(e.target.value)}
+                placeholder="Enter your email"
+                required
+                className="form_input"
+              />
+            </label>
+
+            <button type="submit" className="btn mt-2 bg-primary-black">
+              Send Reset Link
+            </button>
+            <div className="flex-center gap-1">
+              <h1>Password Remembered ?</h1>
+              <button onClick={() => setForgot(false)} className="underline">
+                Go Back
               </button>
             </div>
           </form>

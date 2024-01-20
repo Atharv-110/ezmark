@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import LoginForm from "../core/LoginForm";
-import { registerRole } from "../../services/auth-service";
+import { registerRole, loginRole } from "../../services/auth-service";
 
 const StudentLogin = () => {
   const [login, setLogin] = useState({ email: "", password: "" });
@@ -17,18 +17,18 @@ const StudentLogin = () => {
     password2: "",
   });
 
-  const handleLogin = (e) => {
+  const handleLogin = async (e) => {
     e.preventDefault();
     if (login) {
       // code for api fetch and check
 
-      // const token = await registerRole(registerData, role);
-      // if (token) {
-      //   navigate("/student/dashboard");
-      // }
-
-      alert("Login Success");
-      navigate("/student/dashboard");
+      const token = await loginRole(login, role);
+      console.log(token);
+      if (token) {
+        console.log(token.access);
+        console.log(token.refresh);
+        navigate("/student/dashboard");
+      }
     }
   };
 

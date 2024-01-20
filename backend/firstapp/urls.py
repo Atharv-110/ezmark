@@ -11,7 +11,9 @@ urlpatterns = [
     path('login/student/',StudentloginView.as_view(), name = "Studentlogin"),
     path('login/admin/',AdminloginView.as_view(), name = "Adminlogin"),
     path('student/pending-requests/', PendingRequestView.as_view(), name='pending-requests'),
+    # below not working
     path('student/request-management-section/',PendingRequestManagementSectionView.as_view(), name = "request-management-section"),
+    # this is working
     path('reset/password/student/',StudentSendPasswordResetEmailView.as_view(), name = "StudentSendEmail"),
     path('reset-password-student/<sid>/<token>/', StudentPasswordResetView.as_view(), name='Student-reset-password'),
     path('reset/password/admin/',AdminSendPasswordResetEmailView.as_view(), name = "AdminSendEmail"),

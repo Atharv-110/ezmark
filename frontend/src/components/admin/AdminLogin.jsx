@@ -1,39 +1,59 @@
 import { useState } from "react";
 import LoginForm from "../core/LoginForm";
 import { useNavigate } from "react-router-dom";
+import { registerRole, loginRole, forgetPasswordRole } from "../../services/auth-service";
+import toast from "react-hot-toast";
 
 const AdminLogin = () => {
   const [login, setLogin] = useState({ email: "", password: "" });
   const [type, setType] = useState("login");
+  const [forgetEmail, setForgetEmail] = useState("");
+  const role = "admin";
   const navigate = useNavigate();
   const [register, setRegister] = useState({
     name: "",
     email: "",
-    mobile: "",
+    mobile_number: "",
     password: "",
     password2: "",
   });
 
-  // console.log(detailState.setDetail);
-  const handleLogin = (e) => {
+  // below function will handle login of admin
+  const handleLogin = async (e) => {
     e.preventDefault();
-    if (login) {
-      // code for api fetch and check
-      
-      localStorage.setItem("role", "admin");
-      alert("Login Success");
-      navigate("/admin/dashboard");
+    const token = await loginRole(login, role);
+    console.log(token);
+    if(token) {
+      console.log(token.access);
+      console.log(token.refresh);
+      navigate("/admin/dashboard")
     }
   };
+
+  // below function will handle registration of admin
   const handleRegistration = async (e) => {
     e.preventDefault();
-    if (register) {
-      // code for api fetch and check
-
-      alert("Registration Done!");
+    const registerData = register;
+    // await registerRole(registerData, role);
+    const token = await registerRole(registerData, role);
+    if (token) {
+      setRegister({
+        email: "",
+        name: "",
+        mobile_number: "",
+        password: "",
+        password2: "",
+      });
       setType("login");
     }
   };
+
+  // below function will handle forgot password request
+  const handleForgetPassword = async (e) => {
+    e.preventDefault();
+    await forgetPasswordRole(forgetEmail, role)
+
+  }
   return (
     <section className="h-screen flex-center">
       <LoginForm
@@ -46,6 +66,9 @@ const AdminLogin = () => {
         register={register}
         setRegister={setRegister}
         handleRegistration={handleRegistration}
+        forgetEmail={forgetEmail}
+        setForgetEmail={setForgetEmail}
+        handleForgetPassword={handleForgetPassword}
       />
     </section>
   );
