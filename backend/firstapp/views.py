@@ -45,15 +45,19 @@ class PendingRequestView(APIView):
 
         # Move the pending request to the Student model
         pending_request = PendingRequest.objects.get(email=email)
+        actEmail = pending_request.email
+        actName = pending_request.name
+        actmobile_numbe = pending_request.mobile_number
+        actpassword = pending_request.password
+        pending_request.delete()
         Student.objects.create(
-            email=pending_request.email,
-            name=pending_request.name,
-            mobile_number=pending_request.mobile_number,
-            password=pending_request.password
+            email=actEmail,
+            name=actName,
+            mobile_number=actmobile_numbe,
+            password=actpassword
         )
 
         # Delete the PendingRequest instance
-        pending_request.delete()
 
         return Response({'msg': 'Student approved and details moved to Student table.'}, status=status.HTTP_200_OK)
     else:
@@ -70,6 +74,8 @@ class PendingRequestView(APIView):
         return Response({'msg': 'PendingRequest deleted.'}, status=status.HTTP_204_NO_CONTENT)
     except PendingRequest.DoesNotExist:
         return Response({'error': 'PendingRequest not found'}, status=status.HTTP_404_NOT_FOUND)
+
+# student login view
 
 class StudentloginView(APIView):
   renderer_classes = [UserRenderer]
@@ -165,8 +171,12 @@ class AdminDashboardMetricsView(APIView):
         total_students = Student.objects.count()
         present_students = Attendance.objects.filter(date=date.today(), status='Present').count()
         absent_students = Attendance.objects.filter(date=date.today(), status='Absent').count()
+        admin_user = request.user
+        obj = Admin.objects.filter(email = admin_user).first()
 
         metrics_data = {
+            'admin_name': obj.name,  
+            'admin_email': admin_user.email,
             'total_students': total_students,
             'present_students': present_students,
             'absent_students': absent_students,
@@ -186,7 +196,6 @@ class PendingRequestManagementSectionView(ListAPIView):
   renderer_classes = [UserRenderer]
   
   queryset = PendingRequest.objects.all()
-  print(" djfjjf ",queryset)
   
 # Student Management Section View
   
@@ -214,16 +223,12 @@ class AttendenceManageMentSectionView(ListCreateAPIView):
   @method_decorator(cache_page(60 * 2))  # Cache the result for 2 minutes, adjust as needed
   def list(self, request, *args, **kwargs):
     try:
-      # Get the selected date from the query parameters (default to today)
       selected_date = self.request.query_params.get('date', datetime.today().strftime('%Y-%m-%d'))
-
-      # Convert the selected date string to a datetime object
       selected_date = datetime.strptime(selected_date, '%Y-%m-%d')
-
-      # Filter attendance records based on the selected date
       queryset = Attendance.objects.filter(date=selected_date)
       serializer = self.get_serializer(queryset, many=True)
       return Response(serializer.data)
     except Exception as e:
-      # Raise a relevant built-in exception (APIException in this case)
       return Response({'error': str(e)}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
+
+# Student 

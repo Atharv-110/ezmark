@@ -1,6 +1,7 @@
 from django.contrib import admin
 from django.contrib.auth.admin import UserAdmin
-from .models import User, Admin, Student, Attendance, PendingRequest
+from .models import *
+from django.db import models
 
 class CustomUserAdmin(UserAdmin):
     list_display = ('email', 'name', 'mobile_number', 'is_admin', 'created_at', 'updated_at')
@@ -24,6 +25,7 @@ class CustomUserAdmin(UserAdmin):
     filter_horizontal = ()
     list_filter = ('is_admin', 'is_active')
     ordering = ('email',)
+    
 
 admin.site.register(User, CustomUserAdmin)
 admin.site.register(PendingRequest)

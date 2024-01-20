@@ -16,7 +16,6 @@ class UserManager(BaseUserManager):
             mobile_number=mobile_number,
             **extra_fields
         )
-
         user.set_password(password)
         user.save(using=self._db)
         return user
@@ -35,6 +34,7 @@ class UserManager(BaseUserManager):
         user.save(using=self._db)
         return user
 
+
 class User(AbstractBaseUser, PermissionsMixin):
     email = models.EmailField(
         verbose_name='Email',
@@ -42,7 +42,7 @@ class User(AbstractBaseUser, PermissionsMixin):
         unique=True,
     )
     name = models.CharField(max_length=200)
-    mobile_number = models.CharField(max_length=15)  # Adjust the length as needed
+    mobile_number = models.CharField(max_length=15) 
     is_active = models.BooleanField(default=True)
     is_admin = models.BooleanField(default=False)
     created_at = models.DateTimeField(auto_now_add=True)
@@ -65,7 +65,14 @@ class User(AbstractBaseUser, PermissionsMixin):
     @property
     def is_staff(self):
         return self.is_admin
-
+    
+class PendingRequest(User):
+    STATUS_CHOICES = [
+        ('Decline', 'Decline'),
+        ('Approve', 'Approve'),
+    ]
+    status = models.CharField(max_length=7, choices=STATUS_CHOICES, default="decline")
+    
 class Admin(User):
     # is_admin = is_admin = models.BooleanField(default=True)
     admin_id = models.AutoField(primary_key=True)
@@ -73,12 +80,6 @@ class Admin(User):
 class Student(User):
     roll_number = models.AutoField(primary_key=True)
 
-class PendingRequest(User):
-    STATUS_CHOICES = [
-        ('Decline', 'Decline'),
-        ('Approve', 'Approve'),
-    ]
-    status = models.CharField(max_length = 7, choices = STATUS_CHOICES, default = "Absent")
 
 class Attendance(models.Model):
     attendance_id = models.AutoField(primary_key=True)
