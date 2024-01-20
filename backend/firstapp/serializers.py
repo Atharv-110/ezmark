@@ -94,7 +94,7 @@ class StudentSendPasswordResetEmailSerializer(serializers.Serializer):
       sid = urlsafe_base64_encode(force_bytes(student.roll_number))
       # print(sid)
       token = PasswordResetTokenGenerator().make_token(student)
-      link = 'http://localhost:5173/reset-password/'+sid+'/'+token
+      link = 'http://localhost:3000/api/user/reset/'+sid+'/'+token
       body = 'Click Following Link to Reset Your Password '+link
       data = {
         'subject':'Reset Your Password',
@@ -157,7 +157,7 @@ class AdminSendPasswordResetEmailSerializer(serializers.Serializer):
       aid = urlsafe_base64_encode(force_bytes(admin.admin_id))
       # print(sid)
       token = PasswordResetTokenGenerator().make_token(admin)
-      link = 'http://localhost:5173/reset-password/'+aid+'/'+token
+      link = 'http://localhost:3000/api/user/reset/'+aid+'/'+token
       body = 'Click Following Link to Reset Your Password '+link
       data = {
         'subject':'Reset Your Password',
