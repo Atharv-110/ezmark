@@ -246,4 +246,5 @@ urlpatterns = [
     path('dashboard/admin/metrics/', AdminDashboardMetricsView.as_view(), name='admin-dashboard-metrics'),  #12
     path('dashboard/admin/student-section/', StudentManagementSectionView.as_view(), name = "Student-management-section"),  #13
     path('dashboard/admin/attendance-management/', AttendenceManageMentSectionView.as_view(), name='attendance-management-section'),  #14
+    path('student/dashboard/', StudentAfterLoginPanelView.as_view(), name = "student-login-view")
 ]

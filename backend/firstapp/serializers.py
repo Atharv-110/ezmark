@@ -218,9 +218,8 @@ class StudentMangementSectionSerializer(serializers.ModelSerializer):
         
 # Attendence management section
 class AttendanceManagementSectionSerializer(serializers.ModelSerializer):
-  roll_number = serializers.ReadOnlyField(source='student.roll_number')
-  name = serializers.ReadOnlyField(source='student.name')
-
+  roll_number = serializers.IntegerField()
+  name = serializers.CharField()
   class Meta:
       model = Attendance
-      fields = ['roll_number', 'name', 'date', 'status']
+      fields = ['roll_number', 'name', 'status', 'date']

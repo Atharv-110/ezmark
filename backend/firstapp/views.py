@@ -5,11 +5,12 @@ from rest_framework.generics import ListAPIView, ListCreateAPIView
 from django.utils.decorators import method_decorator
 from django.views.decorators.cache import cache_page
 from .serializers import *
+from django.shortcuts import get_object_or_404
 from django.contrib.auth import authenticate
 from .renderers import UserRenderer
 from rest_framework.permissions import IsAuthenticated
 from rest_framework_simplejwt.tokens import RefreshToken
-from datetime import date, datetime
+from datetime import date, datetime, timedelta
 # Generate Token Manually
 def get_tokens_for_student(student):
   refresh = RefreshToken.for_user(student)
@@ -57,7 +58,7 @@ class PendingRequestView(APIView):
             password=actpassword
         )
 
-        # Delete the PendingRequest instance
+        # Delete the PendingRequest 
 
         return Response({'msg': 'Student approved and details moved to Student table.'}, status=status.HTTP_200_OK)
     else:
@@ -170,16 +171,15 @@ class AdminDashboardMetricsView(APIView):
     try:
         total_students = Student.objects.count()
         present_students = Attendance.objects.filter(date=date.today(), status='Present').count()
-        absent_students = Attendance.objects.filter(date=date.today(), status='Absent').count()
+        # absent_students = Attendance.objects.filter(date=date.today(), status='Absent').count()
         admin_user = request.user
         obj = Admin.objects.filter(email = admin_user).first()
-
         metrics_data = {
             'admin_name': obj.name,  
             'admin_email': admin_user.email,
             'total_students': total_students,
             'present_students': present_students,
-            'absent_students': absent_students,
+            'absent_students': total_students-present_students,
         }
 
         return Response(metrics_data, status=status.HTTP_200_OK)
@@ -188,7 +188,6 @@ class AdminDashboardMetricsView(APIView):
         return Response({'error': str(e)}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
   
 # Pending student-req view
-
 
 class PendingRequestManagementSectionView(ListAPIView):
   permission_classes = [IsAuthenticated]
@@ -224,11 +223,64 @@ class AttendenceManageMentSectionView(ListCreateAPIView):
   def list(self, request, *args, **kwargs):
     try:
       selected_date = self.request.query_params.get('date', datetime.today().strftime('%Y-%m-%d'))
-      selected_date = datetime.strptime(selected_date, '%Y-%m-%d')
-      queryset = Attendance.objects.filter(date=selected_date)
+      ak= datetime.strptime(selected_date, '%Y-%m-%d')
+      student_queryset = Student.objects.all()
+      queryset = [] 
+      for student_obj in student_queryset:
+        name = student_obj.name
+        roll = student_obj.roll_number
+        email = student_obj.email
+        if Attendance.objects.filter(student__email=email, date=selected_date).exists():
+          queryset.append({"roll_number": roll, "name": name, "status":"Present", "date": selected_date})
+        else:
+          queryset.append({"roll_number": roll, "name": name, "status":"Absent", "date": selected_date})
       serializer = self.get_serializer(queryset, many=True)
-      return Response(serializer.data)
+      return Response(serializer.data) 
     except Exception as e:
       return Response({'error': str(e)}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
 
-# Student 
+# Student Panel --after login
+
+class StudentAfterLoginPanelView(APIView):
+  permission_classes = [IsAuthenticated]
+
+  def post(self, request, *args, **kwargs):
+    try:
+       
+        student_user = get_object_or_404(Student, email=request.user.email)
+
+        present_days = Attendance.objects.filter(student=student_user, status='Present').count()
+        absent_days = Attendance.objects.filter(student=student_user, status='Absent').count()
+        Total_days = present_days + absent_days
+        # student_user = request.user
+        obj = Student.objects.filter(email = request.user).first()
+        starting_date = obj.created_at
+        original_datetime = datetime.strptime(str(starting_date), '%Y-%m-%d %H:%M:%S.%f%z')
+        start_date = original_datetime.date()
+        end_date = datetime.now().date()
+        PresentdateList = []
+        for i in Attendance.objects.filter(student=student_user, status='Present'):
+          PresentdateList.append(i.date)        
+        range_date_list = [start_date + timedelta(days=x) for x in range((end_date - start_date).days + 1)]
+        attendenceRecord = {}
+        for i in range_date_list:
+          if i in PresentdateList:
+            attendenceRecord[str(i)] = "Present"
+          else:
+            attendenceRecord[str(i)] = "Absent" 
+        
+        student_user = request.user
+        metrics_data = {
+            'Roll_Number' : obj.roll_number,
+            'student_name': obj.name,  
+            'student_email': student_user.email,
+            'total_days': Total_days, 
+            'present_days': present_days,
+            'absent_days':  absent_days,
+            'attendenceRecord':attendenceRecord,
+        }
+
+        return Response(metrics_data, status=status.HTTP_200_OK)
+
+    except Exception as e:
+        return Response({'error': str(e)}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
