@@ -8,6 +8,10 @@ const storeTokens = ({ access, refresh }) => {
   localStorage.setItem("refresh_token", refresh);
 };
 
+export const storeRole = (role) => {
+  localStorage.setItem("role", role);
+};
+
 export const getAccessToken = () => {
   return localStorage.getItem("access_token");
 };
@@ -16,15 +20,20 @@ export const getRefreshToken = () => {
   return localStorage.getItem("refresh_token");
 };
 
+export const getRole = () => {
+  return localStorage.getItem("role");
+};
+
 export const clearTokens = () => {
   localStorage.removeItem("access_token");
   localStorage.removeItem("refresh_token");
+  localStorage.removeItem("role");
 };
 
-const handleErrors = async (res) => {
+export const handleErrors = async (res) => {
   if (!res.ok) {
     const errorData = await res.json();
-
+    console.log(errorData.error);
     if (errorData.errors) {
       if (errorData.errors.non_field_errors) {
         toast.error(
@@ -48,10 +57,22 @@ const handleErrors = async (res) => {
         );
       }
     }
+    if (errorData.error) {
+      toast.error(
+        errorData.error === "Invalid QR code data."
+          ? "QR Code Expired"
+          : errorData.error === "Device is outside from geofence location"
+          ? "Device is not in Class"
+          : errorData.error === "Attendance already marked for today."
+          ? "Attendance Already Marked"
+          : "Device Error"
+      );
+    }
   }
 };
 
 export const registerRole = async (register, role) => {
+  console.log(register);
   try {
     const res = await fetch(`${API_BASE_URL}/register/${role}/`, {
       method: "POST",
@@ -63,7 +84,11 @@ export const registerRole = async (register, role) => {
     });
 
     if (res.ok) {
-      toast.success("Registration Done!");
+      toast.success(
+        role === "admin"
+          ? "Registration Done!"
+          : "Registration Pending for Approval"
+      );
       const responseData = await res.json();
       return responseData.token;
     } else {
@@ -86,6 +111,7 @@ export const loginRole = async (login, role) => {
     });
 
     if (res.ok) {
+      storeRole(role);
       toast.success("Login Success!");
       const responseData = await res.json();
       storeTokens({
@@ -115,14 +141,26 @@ export const forgetPasswordRole = async (email, role) => {
 
     if (res.ok) {
       toast.dismiss(toastId);
+      localStorage.setItem("forgetRole", role);
       toast.success("Link sent on Registered Email");
       const responseData = await res.json();
-      localStorage.setItem(
-        "forgetToken",
-        responseData.reset_link.substring(37, responseData.reset_link.length)
-      );
+      role === "admin"
+        ? localStorage.setItem(
+            "forgetToken",
+            responseData.reset_link.substring(
+              37,
+              responseData.reset_link.length
+            )
+          )
+        : localStorage.setItem(
+            "forgetToken",
+            responseData.reset_link.substring(
+              45,
+              responseData.reset_link.length
+            )
+          );
       console.log(
-        responseData.reset_link.substring(37, responseData.reset_link.length)
+        responseData.reset_link.substring(45, responseData.reset_link.length)
       );
       // return responseData.token;
     } else {
@@ -137,7 +175,37 @@ export const resetPasswordAdmin = async (newPasswords) => {
   const toastId = toast.loading("Loading...");
   try {
     const res = await fetch(
-      `${API_BASE_URL}/reset-password-admin/${localStorage.getItem(
+      `${API_BASE_URL}/reset-password/${localStorage.getItem("forgetToken")}/`,
+      {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          // Include additional headers if needed (e.g., authorization)
+        },
+        body: JSON.stringify(newPasswords),
+      }
+    );
+
+    if (res.ok) {
+      toast.dismiss(toastId);
+      toast.success("Password Reset successful");
+      const responseData = await res.json();
+      localStorage.removeItem("forgetToken");
+      console.log(responseData);
+      return responseData;
+    } else {
+      await handleErrors(res);
+    }
+  } catch (error) {
+    console.error(error);
+  }
+};
+
+export const resetPasswordStudent = async (newPasswords) => {
+  const toastId = toast.loading("Loading...");
+  try {
+    const res = await fetch(
+      `${API_BASE_URL}/reset-password-student/${localStorage.getItem(
         "forgetToken"
       )}/`,
       {
@@ -171,7 +239,11 @@ export const logout = () => {
 };
 
 export const isAuthenticated = () => {
-  return !!getAccessToken();
+  return !!getAccessToken() && getRole() === "admin";
+};
+
+export const isAuthenticatedStudent = () => {
+  return !!getAccessToken() && getRole() === "student";
 };
 
 export const refreshTokens = async () => {

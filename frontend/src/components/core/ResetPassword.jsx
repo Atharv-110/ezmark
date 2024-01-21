@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { resetPasswordAdmin } from "../../services/auth-service";
+import { resetPasswordAdmin, resetPasswordStudent } from "../../services/auth-service";
 import { useNavigate } from "react-router-dom";
 
 const ResetPasswordPage = () => {
@@ -11,10 +11,18 @@ const ResetPasswordPage = () => {
 
   const handleReset = async (e) => {
     e.preventDefault();
-    const data = await resetPasswordAdmin(newPasswords);
-    if (data) {
-      navigate("/admin/login");
+    if (localStorage.getItem("forgetRole") === "admin") {
+      const data = await resetPasswordAdmin(newPasswords);
+      if (data) {
+        localStorage.removeItem("forgetToken");
+        navigate("/");
+      }
     }
+    const data = await resetPasswordStudent(newPasswords);
+      if (data) {
+        localStorage.removeItem("forgetToken");
+        navigate("/");
+      }
   };
 
   return (

@@ -75,11 +75,12 @@ const AttendanceManagement = () => {
           <TableHeader>
             <TableColumn key="roll_number">Roll No.</TableColumn>
             <TableColumn key="name">ROLE</TableColumn>
+            <TableColumn key="email">Email</TableColumn>
             <TableColumn key="status">STATUS</TableColumn>
           </TableHeader>
           <TableBody emptyContent={"No Attendance Data Found!"} items={items}>
             {(item) => (
-              <TableRow key={item.name}>
+              <TableRow key={item.roll_number}>
                 {(columnKey) => (
                   <TableCell>{getKeyValue(item, columnKey)}</TableCell>
                 )}

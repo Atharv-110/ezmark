@@ -8,7 +8,7 @@ const Navbar = ({ role, name, email }) => {
     navigate("/");
   };
   return (
-    <nav className="fixed z-10 w-[96%] lg:w-[94%] rounded-md mx-auto h-[65px] top-0 left-0 right-0 mt-5 px-3 md:px-8 flex-between shadow-md navbar_glass">
+    <nav className="fixed z-10 w-[96%] lg:w-[94%] rounded-md mx-auto h-[65px] top-0 left-0 right-0 mt-3 md:mt-5 px-3 md:px-8 flex-between shadow-md navbar_glass">
       <h1 className="md:text-2xl tracking-wide font-bold capitalize">
         {role} <span className="hidden md:inline">Dashboard </span>
       </h1>

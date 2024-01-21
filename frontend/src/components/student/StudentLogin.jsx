@@ -1,11 +1,12 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import LoginForm from "../core/LoginForm";
-import { registerRole, loginRole } from "../../services/auth-service";
+import { registerRole, loginRole, forgetPasswordRole } from "../../services/auth-service";
 
 const StudentLogin = () => {
   const [login, setLogin] = useState({ email: "", password: "" });
   const [type, setType] = useState("login");
+  const [forgetEmail, setForgetEmail] = useState("");
   const role = "student";
 
   const navigate = useNavigate();
@@ -25,8 +26,8 @@ const StudentLogin = () => {
       const token = await loginRole(login, role);
       console.log(token);
       if (token) {
-        console.log(token.access);
-        console.log(token.refresh);
+        // console.log(token.access);
+        // console.log(token.refresh);
         navigate("/student/dashboard");
       }
     }
@@ -45,6 +46,12 @@ const StudentLogin = () => {
       password2: "",
     });
   };
+  // below function will handle forgot password request
+  const handleForgetPassword = async (e) => {
+    e.preventDefault();
+    await forgetPasswordRole(forgetEmail, role)
+
+  }
 
   // const handleRegistration = async (e) => {
   //   e.preventDefault();
@@ -110,6 +117,9 @@ const StudentLogin = () => {
         register={register}
         setRegister={setRegister}
         handleRegistration={handleRegister}
+        forgetEmail={forgetEmail}
+        setForgetEmail={setForgetEmail}
+        handleForgetPassword={handleForgetPassword}
       />
     </section>
   );

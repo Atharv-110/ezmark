@@ -2,14 +2,17 @@ from rest_framework.response import Response
 from rest_framework import status, filters
 from rest_framework.views import APIView
 from rest_framework.generics import ListAPIView, ListCreateAPIView
+from django.utils import timezone
 from django.utils.decorators import method_decorator
 from django.views.decorators.cache import cache_page
 from .serializers import *
+from django.shortcuts import get_object_or_404
 from django.contrib.auth import authenticate
 from .renderers import UserRenderer
 from rest_framework.permissions import IsAuthenticated
 from rest_framework_simplejwt.tokens import RefreshToken
-from datetime import date, datetime
+from datetime import date, datetime, timedelta
+from .utils import is_within_geofence
 # Generate Token Manually
 def get_tokens_for_student(student):
   refresh = RefreshToken.for_user(student)
@@ -30,7 +33,7 @@ class StudentRegistrationView(APIView):
   def post(self, request, format=None):
     serializer = StudentRegistrationSerializer(data=request.data)
     serializer.is_valid(raise_exception=True)
-    pending_request = serializer.save()
+    pending_request = serializer.save(is_active = False)
     token = get_tokens_for_student(pending_request)
     return Response({'token':token, 'msg':'Registration Successful'}, status=status.HTTP_201_CREATED)
 
@@ -57,7 +60,7 @@ class PendingRequestView(APIView):
             password=actpassword
         )
 
-        # Delete the PendingRequest instance
+        # Delete the PendingRequest 
 
         return Response({'msg': 'Student approved and details moved to Student table.'}, status=status.HTTP_200_OK)
     else:
@@ -85,6 +88,8 @@ class StudentloginView(APIView):
     email = serializer.data.get('email')
     password = serializer.data.get('password')
     student = authenticate(email=email, password=password)
+    if student.is_student == False:
+      return Response({'errors':{'Present-error':['Already registered as admin']}}, status=status.HTTP_404_NOT_FOUND)
     if student is not None:
       token = get_tokens_for_student(student)
       return Response({'token':token, 'msg':'Login Success'}, status=status.HTTP_200_OK)
@@ -100,6 +105,8 @@ class AdminloginView(APIView):
     email = serializer.data.get('email')
     password = serializer.data.get('password')
     admin = authenticate(email=email, password=password)
+    if admin.is_student == True:
+      return Response({'errors':{'Present-error':['Already registered as admin']}}, status=status.HTTP_404_NOT_FOUND)
     if admin is not None:
       token = get_tokens_for_Admin(admin)
       return Response({'token':token, 'msg':'Login Success'}, status=status.HTTP_200_OK)
@@ -111,7 +118,7 @@ class adminRegistrationView(APIView):
   def post(self, request, format=None):
     serializer = AdminRegistrationSerializer(data = request.data)
     serializer.is_valid(raise_exception=True)
-    admin = serializer.save()
+    admin = serializer.save(is_student = False)
     token = get_tokens_for_Admin(admin)
     return Response({'token' : token, 'msg':'Registartion Successful'}, status = status.HTTP_201_CREATED)
 
@@ -170,16 +177,15 @@ class AdminDashboardMetricsView(APIView):
     try:
         total_students = Student.objects.count()
         present_students = Attendance.objects.filter(date=date.today(), status='Present').count()
-        absent_students = Attendance.objects.filter(date=date.today(), status='Absent').count()
+        # absent_students = Attendance.objects.filter(date=date.today(), status='Absent').count()
         admin_user = request.user
         obj = Admin.objects.filter(email = admin_user).first()
-
         metrics_data = {
             'admin_name': obj.name,  
             'admin_email': admin_user.email,
             'total_students': total_students,
             'present_students': present_students,
-            'absent_students': absent_students,
+            'absent_students': total_students-present_students,
         }
 
         return Response(metrics_data, status=status.HTTP_200_OK)
@@ -188,7 +194,6 @@ class AdminDashboardMetricsView(APIView):
         return Response({'error': str(e)}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
   
 # Pending student-req view
-
 
 class PendingRequestManagementSectionView(ListAPIView):
   permission_classes = [IsAuthenticated]
@@ -224,11 +229,169 @@ class AttendenceManageMentSectionView(ListCreateAPIView):
   def list(self, request, *args, **kwargs):
     try:
       selected_date = self.request.query_params.get('date', datetime.today().strftime('%Y-%m-%d'))
-      selected_date = datetime.strptime(selected_date, '%Y-%m-%d')
-      queryset = Attendance.objects.filter(date=selected_date)
+      ak= datetime.strptime(selected_date, '%Y-%m-%d')
+      student_queryset = Student.objects.all()
+      queryset = [] 
+      for student_obj in student_queryset:
+        name = student_obj.name
+        roll = student_obj.roll_number
+        email = student_obj.email
+        if Attendance.objects.filter(student__email=email, date=selected_date).exists():
+          queryset.append({"roll_number": roll, "name": name, "status":"Present", "date": selected_date})
+        else:
+          queryset.append({"roll_number": roll, "name": name, "status":"Absent", "date": selected_date})
       serializer = self.get_serializer(queryset, many=True)
-      return Response(serializer.data)
+      return Response(serializer.data) 
     except Exception as e:
       return Response({'error': str(e)}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
 
-# Student 
+# Student Panel --after login
+
+class StudentAfterLoginPanelView(APIView):
+  permission_classes = [IsAuthenticated]
+
+  def get(self, request, *args, **kwargs):
+    try:
+       
+        student_user = get_object_or_404(Student, email=request.user.email)
+
+        present_days = Attendance.objects.filter(student=student_user, status='Present').count()
+        absent_days = Attendance.objects.filter(student=student_user, status='Absent').count()
+        Total_days = present_days + absent_days
+        # student_user = request.user
+        obj = Student.objects.filter(email = request.user).first()
+        starting_date = obj.created_at
+        original_datetime = datetime.strptime(str(starting_date), '%Y-%m-%d %H:%M:%S.%f%z')
+        start_date = original_datetime.date()
+        end_date = datetime.now().date()
+        PresentdateList = []
+        for i in Attendance.objects.filter(student=student_user, status='Present'):
+          PresentdateList.append(i.date)        
+        range_date_list = [start_date + timedelta(days=x) for x in range((end_date - start_date).days + 1)]
+        attendenceRecord = {}
+        for i in range_date_list:
+          if i in PresentdateList:
+            attendenceRecord[str(i)] = "Present"
+          else:
+            attendenceRecord[str(i)] = "Absent" 
+        
+        student_user = request.user
+        metrics_data = {
+            'Roll_Number' : obj.roll_number,
+            'student_name': obj.name,  
+            'student_email': student_user.email,
+            'total_days': Total_days, 
+            'present_days': present_days,
+            'absent_days':  absent_days,
+            'attendenceRecord':attendenceRecord,
+        }
+
+        serializer = StudentAfterLoginPanelSerializer(metrics_data)
+        serialized_data = serializer.data
+
+        return Response(serialized_data, status=status.HTTP_200_OK)
+
+    except Exception as e:
+        return Response({'error': str(e)}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
+
+# core code generation
+
+class GenerateQRCodeView(APIView):
+  permission_classes = [IsAuthenticated]
+  def get(self, request):
+    try:
+      student_id = request.user
+      timestamp = timezone.now().timestamp()
+      data = f"{student_id}_{timestamp}"
+
+      # Generate a dynamic QR code
+
+      return Response({'data': data}, status=status.HTTP_200_OK)
+    except Exception as e:
+        return Response({'error': str(e)}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
+
+# Mark Attendence view
+
+class MarkAttendanceDynamicQRView(APIView):
+    permission_classes = [IsAuthenticated]
+
+    def post(self, request):
+      qr_code_data = request.data.get('qr_code_data')
+      latitude = request.data.get('latitude')
+      longitude = request.data.get('longitude')
+      try:
+        student_email, timestamp = qr_code_data.split('_')
+        timestamp = float(timestamp)
+        current_timestamp = timezone.now().timestamp()
+        if str(student_email) != str(request.user): 
+          return Response({'error': 'Device Error'}, status=400)
+        # print("latitude:",latitude,"logitude: ", longitude)
+
+        if abs(current_timestamp - timestamp) > 60:  # increase time according
+          return Response({'error': 'Invalid QR code data.'}, status=400)
+      except Exception as e:
+        return Response({'error': str(e)}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
+      student = Student.objects.get(email = student_email)
+      
+      if not is_within_geofence(latitude, longitude):
+          return Response({'error': 'Device is outside from geofence location'}, status=400)
+
+      # Mark attendance for the authenticated student
+      date = timezone.now().date()
+
+      # Check if attendance already exists for today
+      if Attendance.objects.filter(student=student, date=date).exists():
+          return Response({'error': 'Attendance already marked for today.'}, status=400)
+
+      # Create a new attendance record
+      Attendance.objects.create(
+          student=student,
+          date=date,
+          status='Present'
+      )
+
+      return Response({'msg': 'Attendance marked successfully.'}, status=200)
+    
+# Filter student_attendence_by_date
+
+class GetAttendenceByDateView(APIView):
+  permission_classes = [IsAuthenticated]
+
+  def get(self, request, *args, **kwargs):
+    try:
+      student_user = get_object_or_404(Student, email=request.user.email)
+      requested_date_str = self.request.query_params.get('date', None)
+
+      if not requested_date_str:
+          return Response({'error': 'Date parameter is required'}, status=status.HTTP_400_BAD_REQUEST)
+
+      requested_date = datetime.strptime(requested_date_str, '%Y-%m-%d').date()
+
+      attendance_status = Attendance.objects.filter(student=student_user, date=requested_date).first()
+
+      if attendance_status:
+        status_text = attendance_status.status
+      else:
+        student_instance = get_object_or_404(Student, email=str(request.user))
+        idCreateDate = student_instance.created_at
+        ak = str(idCreateDate)
+        idCreateDate = ak[0:10]
+        idCreateDate = datetime.strptime(idCreateDate, '%Y-%m-%d').date()
+        if requested_date < idCreateDate:
+          status_text = "Not available"
+        else:
+          status_text = "Absent"
+
+      response_data = {
+          # 'student_email': request.user.email,
+          'requested_date': requested_date_str,
+          'attendance_status': status_text,
+      }
+
+      serializer = StudentAttendenceByDateSerializer(response_data)
+      serialized_data = serializer.data
+
+      return Response(serialized_data, status=status.HTTP_200_OK)
+
+    except Exception as e:
+        return Response({'error': str(e)}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)

@@ -12,25 +12,44 @@ import {
 
 import Calendar from "react-calendar";
 import "react-calendar/dist/Calendar.css";
+import { getAttendanceStudent } from "../../services/get-service";
 
-import { users } from "../admin/data";
 const AttendanceRecord = () => {
   const [calDate, setCalDate] = useState(new Date());
   const [page, setPage] = useState(1);
+  const [attendanceData, setAttendanceData] = useState([]); // New state for attendance data
   const rowsPerPage = 10;
 
-  const pages = Math.ceil(users.length / rowsPerPage);
+  const year = calDate.getFullYear();
+  const month = String(calDate.getMonth() + 1).padStart(2, "0");
+  const day = String(calDate.getDate()).padStart(2, "0");
+  const dateString = [year, month, day].join("-");
+
+  const pages = Math.ceil(attendanceData.length / rowsPerPage);
 
   const items = useMemo(() => {
     const start = (page - 1) * rowsPerPage;
     const end = start + rowsPerPage;
 
-    return users.slice(start, end);
-  }, [page, users]);
+    return attendanceData.slice(start, end);
+  }, [page, attendanceData]);
+
+  const fetchTableData = async () => {
+    try {
+      const tableData = await getAttendanceStudent(dateString);
+      setAttendanceData([tableData]);
+    } catch (error) {
+      console.error("Error fetching attendance data:", error);
+    }
+  };
+
+  useEffect(() => {
+    fetchTableData();
+  }, [calDate]);
 
   return (
     <div className="w-full flex-col-reverse gap-y-5 md:flex-row flex md:justify-between items-start">
-      <div className="w-full md:w-[calc(100%-290px)] lg:w-[calc(100%-400px)] flex-center flex-col">
+      <div className="w-full md:w-[calc(100%-400px)] lg:w-[calc(100%-400px)] flex-center flex-col">
         <Table
           aria-label="Example table with client side pagination"
           bottomContent={
@@ -43,30 +62,24 @@ const AttendanceRecord = () => {
                 total={pages}
                 onChange={(page) => setPage(page)}
                 classNames={{
-                  cursor:
-                    "bg-primary-black shadow-none",
+                  cursor: "bg-primary-black shadow-none",
                 }}
               />
             </div>
           }
           classNames={{
-            base: "",
             wrapper: "min-h-[222px] bg-white shadow-lg rounded-md",
-            th: "bg-primary-black text-primary-white rounded-none"
+            th: "bg-primary-black text-primary-white rounded-none",
           }}
         >
           <TableHeader>
-            <TableColumn key="name">NAME</TableColumn>
-            <TableColumn key="role">ROLE</TableColumn>
-            <TableColumn key="status">STATUS</TableColumn>
-            <TableColumn key="col4">COL4</TableColumn>
+            <TableColumn key="requested_date">NAME</TableColumn>
+            <TableColumn key="attendance_status">ROLE</TableColumn>
           </TableHeader>
           <TableBody items={items}>
             {(item) => (
-              <TableRow key={item.name}>
-                {(columnKey) => (
-                  <TableCell>{getKeyValue(item, columnKey)}</TableCell>
-                )}
+              <TableRow key={item.requested_date}>
+                {(columnKey) => <TableCell>{item[columnKey]}</TableCell>}
               </TableRow>
             )}
           </TableBody>
@@ -74,7 +87,7 @@ const AttendanceRecord = () => {
       </div>
       <div
         id="calendar"
-        className="w-full flex-center md:w-[280px] lg:w-[350px]"
+        className="w-full flex-center md:w-[300px] lg:w-[300px]"
       >
         <Calendar onChange={setCalDate} value={calDate} />
       </div>

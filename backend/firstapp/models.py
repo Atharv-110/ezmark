@@ -1,6 +1,10 @@
 from django.db import models
 from django.contrib.auth.models import BaseUserManager, AbstractBaseUser, PermissionsMixin
-from django.contrib.auth.models import User 
+from django.contrib.auth.models import User
+from django.db.models.signals import post_save
+from django.dispatch import receiver
+from django.utils import timezone
+
 
 class UserManager(BaseUserManager):
     def create_user(self, email, name, mobile_number, password, **extra_fields):
@@ -47,6 +51,7 @@ class User(AbstractBaseUser, PermissionsMixin):
     is_admin = models.BooleanField(default=False)
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
+    is_student = models.BooleanField(default = True)
 
     objects = UserManager()
 
@@ -80,7 +85,6 @@ class Admin(User):
 class Student(User):
     roll_number = models.AutoField(primary_key=True)
 
-
 class Attendance(models.Model):
     attendance_id = models.AutoField(primary_key=True)
     student = models.ForeignKey(Student, on_delete=models.CASCADE)
@@ -91,3 +95,4 @@ class Attendance(models.Model):
     ]
     status = models.CharField(max_length=7, choices=STATUS_CHOICES, default="Absent")
     created_at = models.DateTimeField(auto_now_add=True)
+    

@@ -5,10 +5,10 @@ import AdminLogin from "./components/admin/AdminLogin";
 import StudentLogin from "./components/student/StudentLogin";
 import AdminDashboard from "./components/admin/AdminDashboard";
 import StudentDashboard from "./components/student/StudentDashboard";
-import GenerateQRPage from "./components/student/GenerateQR";
-import ScanQRPage from "./components/student/ScanQR";
 import ResetPasswordPage from "./components/core/ResetPassword";
 import ProtectedRoute from "./components/core/ProtectedRoute";
+import ProtectedRouteStudent from "./components/core/ProtectedRouteStudent";
+import PageNotFound from "./components/core/PageNotFound";
 
 function App() {
   const forgetToken = localStorage.getItem("forgetToken")
@@ -24,13 +24,22 @@ function App() {
         <Route element={<ProtectedRoute />}>
           <Route path="/admin/dashboard" element={<AdminDashboard />} />
         </Route>
-        <Route path="/student/dashboard" element={<StudentDashboard />} />
-        <Route path="/student/generate-qr" element={<GenerateQRPage />} />
-        <Route path="/student/scan-qr" element={<ScanQRPage />} />
+        <Route element={<ProtectedRouteStudent />}>
+          <Route path="/student/dashboard" element={<StudentDashboard />} />
+          {/* <Route path="/student/generate-qr" element={<GenerateQRPage />} />
+          <Route path="/student/scan-qr" element={<ScanQRPage />} /> */}
+        </Route>
+
         <Route
-          path={`/reset-password/${forgetToken}`}
+          path={
+            localStorage.getItem("forgetRole")==="admin"
+              ? `/reset-password/${forgetToken}`
+              : `/reset-password-student/${forgetToken}`
+          }
           element={<ResetPasswordPage />}
         />
+
+        <Route path="*" element={<PageNotFound />} />
       </Routes>
     </main>
   );

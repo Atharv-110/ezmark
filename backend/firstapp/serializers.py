@@ -94,7 +94,7 @@ class StudentSendPasswordResetEmailSerializer(serializers.Serializer):
       sid = urlsafe_base64_encode(force_bytes(student.roll_number))
       # print(sid)
       token = PasswordResetTokenGenerator().make_token(student)
-      link = 'http://localhost:5173/reset-password/'+sid+'/'+token
+      link = 'http://localhost:5173/reset-password-student/'+sid+'/'+token
       body = 'Click Following Link to Reset Your Password '+link
       data = {
         'subject':'Reset Your Password',
@@ -218,9 +218,38 @@ class StudentMangementSectionSerializer(serializers.ModelSerializer):
         
 # Attendence management section
 class AttendanceManagementSectionSerializer(serializers.ModelSerializer):
-  roll_number = serializers.ReadOnlyField(source='student.roll_number')
-  name = serializers.ReadOnlyField(source='student.name')
-
+  roll_number = serializers.IntegerField()
+  name = serializers.CharField()
   class Meta:
       model = Attendance
-      fields = ['roll_number', 'name', 'date', 'status']
+      fields = ['roll_number', 'name', 'status', 'date']
+
+class StudentAfterLoginPanelSerializer(serializers.Serializer):
+    Roll_Number = serializers.IntegerField()
+    student_name = serializers.CharField()
+    student_email = serializers.EmailField()
+    total_days = serializers.IntegerField()
+    present_days = serializers.IntegerField()
+    absent_days = serializers.IntegerField()
+    attendenceRecord = serializers.DictField()
+
+    def to_representation(self, instance):
+      return {
+          'Roll_Number': instance['Roll_Number'],
+          'student_name': instance['student_name'],
+          'student_email': instance['student_email'],
+          'total_days': instance['total_days'],
+          'present_days': instance['present_days'],
+          'absent_days': instance['absent_days'],
+          'attendenceRecord': instance['attendenceRecord'],
+      }
+
+class StudentAttendenceByDateSerializer(serializers.Serializer):
+    requested_date = serializers.DateField()
+    attendance_status = serializers.CharField()
+
+    def to_representation(self, instance):
+        return {
+            'requested_date': instance['requested_date'],
+            'attendance_status': instance['attendance_status'],
+        }
