@@ -2,7 +2,6 @@ import { useState } from "react";
 import LoginForm from "../core/LoginForm";
 import { useNavigate } from "react-router-dom";
 import { registerRole, loginRole, forgetPasswordRole } from "../../services/auth-service";
-import toast from "react-hot-toast";
 
 const AdminLogin = () => {
   const [login, setLogin] = useState({ email: "", password: "" });
@@ -22,10 +21,7 @@ const AdminLogin = () => {
   const handleLogin = async (e) => {
     e.preventDefault();
     const token = await loginRole(login, role);
-    console.log(token);
     if(token) {
-      console.log(token.access);
-      console.log(token.refresh);
       navigate("/admin/dashboard")
     }
   };

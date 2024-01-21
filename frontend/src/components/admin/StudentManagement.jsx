@@ -1,4 +1,4 @@
-import { useState, useMemo } from "react";
+import { useState, useMemo, useEffect } from "react";
 import {
   Table,
   TableHeader,
@@ -9,10 +9,12 @@ import {
   Pagination,
   getKeyValue,
 } from "@nextui-org/react";
+import { getManageStudents } from "../../services/get-service";
 
-import { users } from "./data";
 
 const StudentManagement = () => {
+  const [users, setUsers]  = useState([]);
+  const [search, setSearch] = useState("");
   const [page, setPage] = useState(1);
   const rowsPerPage = 10;
 
@@ -25,18 +27,32 @@ const StudentManagement = () => {
     return users.slice(start, end);
   }, [page, users]);
 
+  const fetchTableData = async () => {
+    const tableData = await getManageStudents();
+    setUsers(tableData)
+  }
+
+  const fetchSearchData = async (e) => {
+    e.preventDefault();
+    const data = await getManageStudents(search);
+    setUsers(data);
+  }
+
+  useEffect(() => {
+    fetchTableData()
+  }, [])
+
   return (
     <div className="w-full flex-center flex-col gap-10">
-      <form className="w-full flex items-stretch justify-center">
+      <form onSubmit={fetchSearchData} className="w-full flex items-stretch justify-center">
         <input
           type="text"
-          placeholder="Search by name or roll number"
-          // value={searchText}
-          // onChange={handleSearchChange}
-          required
+          placeholder="Search by name, roll number or mobile number"
+          value={search}
+          onChange={(e) => setSearch(e.target.value)}
           className="w-3/4 p-3 px-4 shadow-sm bg-white rounded-l-md outline-none border-2 focus:border-r-0 border-transparent focus:border-2 focus:border-primary-black text-sm font-medium"
         />
-        <button className="btn rounded-l-none">
+        <button type="submit" className="btn bg-primary-black rounded-l-none">
           <svg
             xmlns="http://www.w3.org/2000/svg"
             fill="none"
@@ -55,6 +71,7 @@ const StudentManagement = () => {
       </form>
       <Table
         aria-label="Example table with client side pagination"
+        isStriped
         bottomContent={
           <div className="flex w-full justify-center">
             <Pagination
@@ -73,18 +90,18 @@ const StudentManagement = () => {
         classNames={{
           base: "",
           wrapper: "min-h-[222px] bg-white shadow-lg rounded-md",
-          th: "bg-primary-black text-primary-white rounded-none",
+          th: "bg-primary-black text-primary-white rounded-none text-base",
         }}
       >
         <TableHeader>
-          <TableColumn key="name">NAME</TableColumn>
-          <TableColumn key="role">ROLE</TableColumn>
-          <TableColumn key="status">STATUS</TableColumn>
-          <TableColumn key="col4">COL4</TableColumn>
+          <TableColumn key="roll_number">Role No.</TableColumn>
+          <TableColumn key="name">Name</TableColumn>
+          <TableColumn key="email">Email</TableColumn>
+          <TableColumn key="mobile_number">Mobile Number</TableColumn>
         </TableHeader>
-        <TableBody items={items}>
+        <TableBody emptyContent={"No Student Data Found!"} items={items}>
           {(item) => (
-            <TableRow key={item.name}>
+            <TableRow key={item.roll_number}>
               {(columnKey) => (
                 <TableCell>{getKeyValue(item, columnKey)}</TableCell>
               )}

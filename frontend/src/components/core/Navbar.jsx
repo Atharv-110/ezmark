@@ -1,18 +1,65 @@
+import { logout } from "../../services/auth-service";
+import { useNavigate } from "react-router-dom";
 
-const Navbar = () => {
+const Navbar = ({ role, name, email }) => {
+  const navigate = useNavigate();
+  const handleLogout = () => {
+    logout();
+    navigate("/");
+  };
   return (
-    <nav className="fixed z-10 w-[96%] lg:w-[94%] rounded-md mx-auto h-[60px] top-0 left-0 right-0 mt-5 px-2 md:px-8 py-3 flex-between shadow-md navbar_glass">
+    <nav className="fixed z-10 w-[96%] lg:w-[94%] rounded-md mx-auto h-[65px] top-0 left-0 right-0 mt-5 px-3 md:px-8 flex-between shadow-md navbar_glass">
       <h1 className="md:text-2xl tracking-wide font-bold capitalize">
-        {localStorage.getItem("role")} <span className="hidden md:inline">Dashboard </span>
+        {role} <span className="hidden md:inline">Dashboard </span>
       </h1>
-      <div className="flex items-center gap-2 border-l-2 pl-3">
-        <h2 className="btn p-0 w-[25px] h-[25px] md:w-[35px] md:h-[35px] flex items-center justify-center md:text-[1.5rem] leading-none font-bold border-2 rounded-full">
-          A
-        </h2>
-        <div className="leading-none">
-          <p className="font-medium text-sm">Dummy</p>
-          <p className="text-xs">dummy@gmail.com</p>
+      <div className="flex-center gap-2">
+        <div className="flex items-center gap-2 max-sm:border-l-2 pl-2 md:border-r-2 pr-2">
+          <button className="btn text-lg px-3 py-1 font-semibold uppercase">
+            {name.substring(0, 1)}
+          </button>
+          <button
+            onClick={handleLogout}
+            className="md:hidden btn_bordered p-1.5"
+          >
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              fill="none"
+              viewBox="0 0 24 24"
+              strokeWidth={1.5}
+              stroke="currentColor"
+              className="w-6 h-6"
+            >
+              <path
+                strokeLinecap="round"
+                strokeLinejoin="round"
+                d="M15.75 9V5.25A2.25 2.25 0 0 0 13.5 3h-6a2.25 2.25 0 0 0-2.25 2.25v13.5A2.25 2.25 0 0 0 7.5 21h6a2.25 2.25 0 0 0 2.25-2.25V15m3 0 3-3m0 0-3-3m3 3H9"
+              />
+            </svg>
+          </button>
+          <div className="hidden md:block">
+            <p className="font-medium text-xs">{name}</p>
+            <p className="text-xs">{email}</p>
+          </div>
         </div>
+        <button
+          onClick={handleLogout}
+          className="hidden md:block btn_bordered p-1.5"
+        >
+          <svg
+            xmlns="http://www.w3.org/2000/svg"
+            fill="none"
+            viewBox="0 0 24 24"
+            strokeWidth={1.5}
+            stroke="currentColor"
+            className="w-6 h-6"
+          >
+            <path
+              strokeLinecap="round"
+              strokeLinejoin="round"
+              d="M15.75 9V5.25A2.25 2.25 0 0 0 13.5 3h-6a2.25 2.25 0 0 0-2.25 2.25v13.5A2.25 2.25 0 0 0 7.5 21h6a2.25 2.25 0 0 0 2.25-2.25V15m3 0 3-3m0 0-3-3m3 3H9"
+            />
+          </svg>
+        </button>
       </div>
     </nav>
   );

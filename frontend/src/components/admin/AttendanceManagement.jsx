@@ -1,4 +1,4 @@
-import { useState, useMemo } from "react";
+import { useState, useMemo, useEffect } from "react";
 import {
   Table,
   TableHeader,
@@ -9,15 +9,23 @@ import {
   Pagination,
   getKeyValue,
 } from "@nextui-org/react";
-
+import { getManageAttendance } from "../../services/get-service";
 import Calendar from "react-calendar";
 import "react-calendar/dist/Calendar.css";
 
-import { users } from "./data";
+// import { users } from "./data";
 
 const AttendanceManagement = () => {
+  const [users, setUsers] = useState([]);
+  const [calDate, setCalDate] = useState(new Date());
   const [page, setPage] = useState(1);
   const rowsPerPage = 10;
+
+  // converted the date into required format i.e. YYYY-MM-DD (String type) for the API
+  const year = calDate.getFullYear();
+  const month = String(calDate.getMonth() + 1).padStart(2, "0");
+  const day = String(calDate.getDate()).padStart(2, "0");
+  const dateString = [year, month, day].join("-");
 
   const pages = Math.ceil(users.length / rowsPerPage);
 
@@ -28,37 +36,21 @@ const AttendanceManagement = () => {
     return users.slice(start, end);
   }, [page, users]);
 
+  const fetchTableData = async () => {
+    const tableData = await getManageAttendance(dateString);
+    setUsers(tableData);
+  };
+
+  useEffect(() => {
+    fetchTableData();
+  }, [calDate]);
+
   return (
     <div className="w-full flex-col-reverse gap-y-5 md:flex-row flex md:justify-between  items-start">
       <div className="w-full md:w-[calc(100%-290px)] lg:w-[calc(100%-400px)] flex-center flex-col gap-10">
-        <form className="w-full flex items-stretch justify-center">
-          <input
-            type="text"
-            placeholder="Search by name or roll number"
-            // value={searchText}
-            // onChange={handleSearchChange}
-            required
-            className="w-full p-3 px-4 shadow-lg bg-white lg:shadow-none rounded-l-md outline-none border-2 focus:border-r-0 border-transparent focus:border-2 focus:border-primary-black text-sm font-medium"
-          />
-          <button className="btn rounded-l-none">
-            <svg
-              xmlns="http://www.w3.org/2000/svg"
-              fill="none"
-              viewBox="0 0 24 24"
-              strokeWidth={1}
-              stroke="currentColor"
-              className="w-7 h-7"
-            >
-              <path
-                strokeLinecap="round"
-                strokeLinejoin="round"
-                d="m21 21-5.197-5.197m0 0A7.5 7.5 0 1 0 5.196 5.196a7.5 7.5 0 0 0 10.607 10.607Z"
-              />
-            </svg>
-          </button>
-        </form>
         <Table
           aria-label="Example table with client side pagination"
+          isStriped
           bottomContent={
             <div className="flex w-full justify-center">
               <Pagination
@@ -69,8 +61,7 @@ const AttendanceManagement = () => {
                 total={pages}
                 onChange={(page) => setPage(page)}
                 classNames={{
-                  cursor:
-                    "bg-primary-black shadow-none",
+                  cursor: "bg-primary-black shadow-none",
                 }}
               />
             </div>
@@ -82,12 +73,11 @@ const AttendanceManagement = () => {
           }}
         >
           <TableHeader>
-            <TableColumn key="name">NAME</TableColumn>
-            <TableColumn key="role">ROLE</TableColumn>
+            <TableColumn key="roll_number">Roll No.</TableColumn>
+            <TableColumn key="name">ROLE</TableColumn>
             <TableColumn key="status">STATUS</TableColumn>
-            <TableColumn key="col4">COL4</TableColumn>
           </TableHeader>
-          <TableBody items={items}>
+          <TableBody emptyContent={"No Attendance Data Found!"} items={items}>
             {(item) => (
               <TableRow key={item.name}>
                 {(columnKey) => (
@@ -102,7 +92,7 @@ const AttendanceManagement = () => {
         id="calendar"
         className="w-full flex-center md:w-[280px] lg:w-[350px]"
       >
-        <Calendar />
+        <Calendar onChange={setCalDate} value={calDate} />
       </div>
     </div>
   );

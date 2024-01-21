@@ -2,14 +2,11 @@
   @apply absolute w-full min-h-screen md:px-[2%] lg:px-[3%] bg-primary-white text-primary-black;
 }
 
-/* common css */
-
-.page {
-}
-
 .navbar_glass {
-  @apply bg-white shadow-sm bg-opacity-15 bg-clip-padding backdrop-filter backdrop-blur-[5px];
+  @apply bg-white border shadow-sm bg-opacity-15 bg-clip-padding backdrop-filter backdrop-blur-[5px];
 }
+
+/* common css */
 
 .transition-effect {
   @apply ease-in-out duration-300;
@@ -93,7 +90,6 @@
 #calendar .react-calendar__month-view__days__day--weekend {
   @apply text-red-500;
 }
-
 
 input::-webkit-outer-spin-button,
 input::-webkit-inner-spin-button {

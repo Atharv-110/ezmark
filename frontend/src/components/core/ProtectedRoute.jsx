@@ -1,10 +1,15 @@
-import { useEffect } from "react";
+import { Outlet, Navigate } from "react-router-dom";
+import { isAuthenticated } from "../../services/auth-service";
 
 const ProtectedRoute = () => {
-  useEffect(() => {
-    
-  });
-  return <div>ProtectedRoute</div>;
+  let auth = { token: isAuthenticated() };
+  return auth.token ? (
+    <Outlet />
+  ) : (
+    <>
+      <Navigate to="/admin/login" />
+    </>
+  );
 };
 
 export default ProtectedRoute;
