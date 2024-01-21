@@ -228,6 +228,50 @@ by bellow url
                                                                                ---not optional--
     End-point : http://127.0.0.1:8000/api/dashboard/admin/attendance-management/?date=2024-01-18   
     -> if u have to know today status then u have to send todays date 
+    
+15) This is fiftheen Api's where a u have to send where u have to send a get request
+    with jwt token i will send u a token which specifically for that student u have to set
+    token behind the qr u have to send the get req in every minute i will send u token
+    
+    Method -> GET
+    
+    response look-like = {
+        "data": "abhishek8649@gmail.com_1705816414.263241"
+    }
+    u have to set this token behind qr.
+    
+    end-points - http://127.0.0.1:8000/api/student/generate-qr-code/
+
+16) This is sixteen Apis where u have to send logitude latitude and data which is student will get
+    from qr code. u have to send access token
+    -> i will check three thing whether both id is same
+    -> i will check the time limit 
+    -> i will check geofence location
+    
+    Method -> Post
+    
+    data look-like which comes from front-end in json fromat = {
+    "qr_code_data":"abhishek8649@gmail.com_1705816414.263241",
+    "latitude":"22.6045241",
+    "longitude":"75.6855326"
+    }
+    
+    response look-like if all ok={
+    {
+    "msg": "Attendance marked successfully."
+    }
+    
+    response look like if its different user= {
+    "error": "Device Error"
+    }
+
+    response look like if it is not in geofence = {
+    "error": "Device is outside from geofence location"
+    }
+    
+    response look -like if attendence already marked = {
+    "error": "Attendance already marked for today."
+    }
 """
 
 urlpatterns = [
@@ -246,5 +290,7 @@ urlpatterns = [
     path('dashboard/admin/metrics/', AdminDashboardMetricsView.as_view(), name='admin-dashboard-metrics'),  #12
     path('dashboard/admin/student-section/', StudentManagementSectionView.as_view(), name = "Student-management-section"),  #13
     path('dashboard/admin/attendance-management/', AttendenceManageMentSectionView.as_view(), name='attendance-management-section'),  #14
-    path('student/dashboard/', StudentAfterLoginPanelView.as_view(), name = "student-login-view")
+    path('student/dashboard/', StudentAfterLoginPanelView.as_view(), name = "student-login-view"),    #15
+    path('student/generate-qr-code/', GenerateQRCodeView.as_view(), name='generate-qr-code'),     #16
+    path('student/MarkAttendanceDynamicQRView/',MarkAttendanceDynamicQRView.as_view(), name = "Mark-Attendance-Dynamic")  #17
 ]

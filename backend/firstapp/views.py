@@ -2,6 +2,7 @@ from rest_framework.response import Response
 from rest_framework import status, filters
 from rest_framework.views import APIView
 from rest_framework.generics import ListAPIView, ListCreateAPIView
+from django.utils import timezone
 from django.utils.decorators import method_decorator
 from django.views.decorators.cache import cache_page
 from .serializers import *
@@ -11,6 +12,7 @@ from .renderers import UserRenderer
 from rest_framework.permissions import IsAuthenticated
 from rest_framework_simplejwt.tokens import RefreshToken
 from datetime import date, datetime, timedelta
+from .utils import is_within_geofence
 # Generate Token Manually
 def get_tokens_for_student(student):
   refresh = RefreshToken.for_user(student)
@@ -284,3 +286,61 @@ class StudentAfterLoginPanelView(APIView):
 
     except Exception as e:
         return Response({'error': str(e)}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
+
+# core code generation
+
+class GenerateQRCodeView(APIView):
+  permission_classes = [IsAuthenticated]
+  def get(self, request):
+    try:
+      student_id = request.user
+      timestamp = timezone.now().timestamp()
+      data = f"{student_id}_{timestamp}"
+
+      # Generate a dynamic QR code
+
+      return Response({'data': data}, status=status.HTTP_200_OK)
+    except Exception as e:
+        return Response({'error': str(e)}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
+
+# Mark Attendence view
+
+class MarkAttendanceDynamicQRView(APIView):
+    permission_classes = [IsAuthenticated]
+
+    def post(self, request):
+      qr_code_data = request.data.get('qr_code_data')
+      latitude = request.data.get('latitude')
+      longitude = request.data.get('longitude')
+      try:
+        student_email, timestamp = qr_code_data.split('_')
+        timestamp = float(timestamp)
+        current_timestamp = timezone.now().timestamp()
+        if str(student_email) != str(request.user): 
+          return Response({'error': 'Device Error'}, status=400)
+        # print("latitude:",latitude,"logitude: ", longitude)
+
+        if abs(current_timestamp - timestamp) > 200:  # increase time according
+          return Response({'error': 'Invalid QR code data.'}, status=400)
+      except Exception as e:
+        return Response({'error': str(e)}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
+      student = Student.objects.get(email = student_email)
+      
+      if not is_within_geofence(latitude, longitude):
+          return Response({'error': 'Device is outside from geofence location'}, status=400)
+
+      # Mark attendance for the authenticated student
+      date = timezone.now().date()
+
+      # Check if attendance already exists for today
+      if Attendance.objects.filter(student=student, date=date).exists():
+          return Response({'error': 'Attendance already marked for today.'}, status=400)
+
+      # Create a new attendance record
+      Attendance.objects.create(
+          student=student,
+          date=date,
+          status='Present'
+      )
+
+      return Response({'msg': 'Attendance marked successfully.'}, status=200)
