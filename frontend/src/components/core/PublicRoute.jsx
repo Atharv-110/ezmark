@@ -3,11 +3,13 @@ import {
   isAuthenticated,
   isAuthenticatedStudent,
 } from "../../services/auth-service";
+import HeroHeader from "./HeroHeader";
+import Footer from "./Footer";
 
 const PublicRoute = (restricted) => {
   const auth = { token: isAuthenticated(), token1: isAuthenticatedStudent() };
 
-//   console.log(auth);
+  //   console.log(auth);
 
   return auth.token && restricted ? (
     <Navigate to="/admin/dashboard" />
@@ -15,7 +17,9 @@ const PublicRoute = (restricted) => {
     <Navigate to="/student/dashboard" />
   ) : (
     <>
+      <HeroHeader />
       <Outlet />
+      <Footer />
     </>
   );
 };

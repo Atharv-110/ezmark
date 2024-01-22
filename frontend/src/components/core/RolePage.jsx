@@ -1,5 +1,7 @@
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
+import TeamCardSection from "./TeamCardSection";
+import KeyBenefitSection from "./KeyBenefitSection";
 
 const RolePage = () => {
   const [role, setRole] = useState(null);
@@ -14,14 +16,29 @@ const RolePage = () => {
   }, [role]);
 
   return (
-    <section className="h-screen flex-center">
-      <div className="w-fit bg-white rounded-xl shadow-lg p-8">
-        <h1 className="text-center mb-6 text-2xl font-medium">Select a Role</h1>
-        <div className="flex-center gap-9">
-          <div>
+    <section className="bg_img pt-20 md:pt-16 mb-20 max-sm:px-2 text-primary-black">
+      <section className="flex-center flex-col mt-6 md:mt-8 gap-6">
+        <div className="text-sm md:text-base flex-center gap-2 bg-white w-fit py-2 px-2 md:px-3 rounded-lg shadow-md">
+          <div className="bg-blue-400 px-2 md:px-4 w-fit rounded-md text-primary-white font-medium">
+            New
+          </div>
+          <div className="font-medium">Geofenced Attendance Marking</div>
+        </div>
+        <h1 className="text-3xl md:text-5xl md:leading-[1.2] text-center md:tracking-wide font-semibold">
+          Your Instant Solution for <br className="max-sm:hidden" />
+          Attendance & Student Management
+        </h1>
+        <p className="w-full md:w-1/2 max-sm:text-sm text-center text-gray-dark md:leading-6">
+          Effortlessly streamlining attendance and student management, making
+          the process hassle-free and highly efficient.
+        </p>
+
+        <div className="flex flex-col gap-y-2">
+          <h3 className="text-center text-lg font-semibold">Login or Register as</h3>
+          <div className="flex-center gap-8">
             <button
               onClick={() => setRole("student")}
-              className="btn rounded-lg gap-1 flex items-center px-4 py-2"
+              className="btn rounded-lg gap-1 flex items-center"
             >
               <svg
                 xmlns="http://www.w3.org/2000/svg"
@@ -29,7 +46,7 @@ const RolePage = () => {
                 viewBox="0 0 24 24"
                 strokeWidth={1}
                 stroke="currentColor"
-                className="w-[30px] h-[30px]"
+                className="w-[25px] h-[25px]"
               >
                 <path
                   strokeLinecap="round"
@@ -39,8 +56,6 @@ const RolePage = () => {
               </svg>
               <h2 className="text-center text-lg font-medium">Student</h2>
             </button>
-          </div>
-          <div>
             <button
               onClick={() => setRole("admin")}
               className="btn_bordered rounded-lg gap-1 flex items-center px-4 py-2"
@@ -51,7 +66,7 @@ const RolePage = () => {
                 viewBox="0 0 24 24"
                 strokeWidth={1}
                 stroke="currentColor"
-                className="w-[30px] h-[30px]"
+                className="w-[25px] h-[25px]"
               >
                 <path
                   strokeLinecap="round"
@@ -63,7 +78,32 @@ const RolePage = () => {
             </button>
           </div>
         </div>
-      </div>
+      </section>
+      <section className="flex-center mt-6">
+        <img
+          src="/images/hero_image.png"
+          alt=""
+          className="w-full md:w-[700px]"
+        />
+      </section>
+      <section className="flex-center flex-col mt-24">
+        <h2 className="text-2xl md:text-4xl md:leading-[1.2] text-center md:tracking-wide font-semibold mb-4">
+          Key Benefits
+        </h2>
+        <p className="w-full md:w-1/2 max-sm:text-sm text-center text-gray-dark md:leading-6">
+          The one and only force behind development of EZMark from scratch. Recursively testing and upgrading the application for seamless and best user experience.
+        </p>
+        <KeyBenefitSection />
+      </section>
+      <section className="flex-center flex-col mt-24">
+        <h2 className="text-2xl md:text-4xl md:leading-[1.2] text-center md:tracking-wide font-semibold mb-4">
+          Meet ByteBlasters
+        </h2>
+        <p className="w-full md:w-1/2 max-sm:text-sm text-center text-gray-dark md:leading-6">
+          The one and only force behind development of ezMark from scratch. Recursively testing and upgrading the application for seamless and best user experience.
+        </p>
+        <TeamCardSection />
+      </section>
     </section>
   );
 };

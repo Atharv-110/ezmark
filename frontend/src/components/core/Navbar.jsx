@@ -8,10 +8,13 @@ const Navbar = ({ role, name, email }) => {
     navigate("/");
   };
   return (
-    <nav className="fixed z-10 w-[96%] lg:w-[94%] rounded-md mx-auto h-[65px] top-0 left-0 right-0 mt-3 md:mt-5 px-3 md:px-8 flex-between shadow-md navbar_glass">
-      <h1 className="md:text-2xl tracking-wide font-bold capitalize">
-        {role} <span className="hidden md:inline">Dashboard </span>
-      </h1>
+    <nav className="fixed z-10 w-[96%] lg:w-[94%] rounded-md mx-auto h-[65px] top-0 left-0 right-0 mt-3 md:mt-5 px-3 md:px-6 flex-between items-center shadow-md navbar_glass">
+      <div className="flex-center gap-1">
+        <img src="/images/logo.png" alt="" className="w-12" />
+        <h1 className="md:text-2xl tracking-wide font-bold capitalize">
+          {role}
+        </h1>
+      </div>
       <div className="flex-center gap-2">
         <div className="flex items-center gap-2 max-sm:border-l-2 pl-2 md:border-r-2 pr-2">
           <button className="btn text-lg px-3 py-1 font-semibold uppercase">

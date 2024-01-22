@@ -6,6 +6,10 @@
   @apply bg-white border shadow-sm bg-opacity-15 bg-clip-padding backdrop-filter backdrop-blur-[5px];
 }
 
+.bg_img {
+  background-image: url("/images/background.png");
+}
+
 /* common css */
 
 .transition-effect {
@@ -89,6 +93,12 @@
 
 #calendar .react-calendar__month-view__days__day--weekend {
   @apply text-red-500;
+}
+
+/* Team card Styles */
+
+.team_card_icon {
+  @apply px-3 py-1.5 border-2 rounded-md text-lg border-primary-black text-primary-black hover:bg-primary-black hover:text-primary-white transition-effect;
 }
 
 input::-webkit-outer-spin-button,

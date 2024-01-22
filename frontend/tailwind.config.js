@@ -16,6 +16,9 @@ export default {
         "gray-dark": "#6C757D",
         "gray-darker": "#495057",
       },
+      fontFamily: {
+        ubuntu: ['Open Sans', 'sans-serif'],
+      }
     },
   },
   darkMode: "class",

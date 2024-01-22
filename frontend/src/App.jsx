@@ -18,7 +18,6 @@ function App() {
   return (
     <main className="App">
       <Routes>
-        
         <Route element={<PublicRoute restricted={true} />}>
           <Route path="/" element={<RolePage />} />
           <Route path="/admin/login" element={<AdminLogin />} />
