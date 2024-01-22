@@ -88,8 +88,11 @@ class StudentloginView(APIView):
     email = serializer.data.get('email')
     password = serializer.data.get('password')
     student = authenticate(email=email, password=password)
-    if student.is_student == False:
-      return Response({'errors':{'Present-error':['Already registered as admin']}}, status=status.HTTP_404_NOT_FOUND)
+    try:
+      if student.is_student == False:
+        return Response({'errors':{'Present-error':['Already registered as admin']}}, status=status.HTTP_404_NOT_FOUND)
+    except Exception as e:
+          return Response({'error': "Not Found Details"}, status=status.HTTP_404_NOT_FOUND)
     if student is not None:
       token = get_tokens_for_student(student)
       return Response({'token':token, 'msg':'Login Success'}, status=status.HTTP_200_OK)
@@ -105,8 +108,11 @@ class AdminloginView(APIView):
     email = serializer.data.get('email')
     password = serializer.data.get('password')
     admin = authenticate(email=email, password=password)
-    if admin.is_student == True:
-      return Response({'errors':{'Present-error':['Already registered as admin']}}, status=status.HTTP_404_NOT_FOUND)
+    try:
+      if admin.is_student == True:
+        return Response({'errors':{'Present-error':['Already registered as Student']}}, status=status.HTTP_404_NOT_FOUND)
+    except Exception as e:
+          return Response({'error': "Not Found Details"}, status=status.HTTP_404_NOT_FOUND)
     if admin is not None:
       token = get_tokens_for_Admin(admin)
       return Response({'token':token, 'msg':'Login Success'}, status=status.HTTP_200_OK)
@@ -237,9 +243,11 @@ class AttendenceManageMentSectionView(ListCreateAPIView):
         roll = student_obj.roll_number
         email = student_obj.email
         if Attendance.objects.filter(student__email=email, date=selected_date).exists():
-          queryset.append({"roll_number": roll, "name": name, "status":"Present", "date": selected_date})
+          queryset.append({"roll_number": roll, "name": name, "email": email, "status":"Present", "date": selected_date})
+        elif datetime.strptime(selected_date,'%Y-%m-%d').date() > datetime.now().date() or datetime.strptime(selected_date,'%Y-%m-%d').date() < datetime.strptime(str(student_obj.created_at)[0:10], '%Y-%m-%d').date():
+          queryset.append({"roll_number": roll, "name": name, "email":email, "status":"Not Available", "date": selected_date})
         else:
-          queryset.append({"roll_number": roll, "name": name, "status":"Absent", "date": selected_date})
+          queryset.append({"roll_number": roll, "name": name, "email": email, "status":"Absent", "date": selected_date})
       serializer = self.get_serializer(queryset, many=True)
       return Response(serializer.data) 
     except Exception as e:
@@ -356,19 +364,15 @@ class MarkAttendanceDynamicQRView(APIView):
 
 class GetAttendenceByDateView(APIView):
   permission_classes = [IsAuthenticated]
-
+  
   def get(self, request, *args, **kwargs):
     try:
       student_user = get_object_or_404(Student, email=request.user.email)
       requested_date_str = self.request.query_params.get('date', None)
-
       if not requested_date_str:
-          return Response({'error': 'Date parameter is required'}, status=status.HTTP_400_BAD_REQUEST)
-
+        return Response({'error': 'Date parameter is required'}, status=status.HTTP_400_BAD_REQUEST)
       requested_date = datetime.strptime(requested_date_str, '%Y-%m-%d').date()
-
       attendance_status = Attendance.objects.filter(student=student_user, date=requested_date).first()
-
       if attendance_status:
         status_text = attendance_status.status
       else:
@@ -377,15 +381,15 @@ class GetAttendenceByDateView(APIView):
         ak = str(idCreateDate)
         idCreateDate = ak[0:10]
         idCreateDate = datetime.strptime(idCreateDate, '%Y-%m-%d').date()
-        if requested_date < idCreateDate:
+        if requested_date > datetime.now().date() or requested_date < idCreateDate:
           status_text = "Not available"
         else:
           status_text = "Absent"
 
       response_data = {
           # 'student_email': request.user.email,
-          'requested_date': requested_date_str,
-          'attendance_status': status_text,
+        'requested_date': requested_date_str,
+        'attendance_status': status_text,
       }
 
       serializer = StudentAttendenceByDateSerializer(response_data)

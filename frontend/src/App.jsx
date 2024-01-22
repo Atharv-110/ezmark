@@ -8,6 +8,7 @@ import StudentDashboard from "./components/student/StudentDashboard";
 import ResetPasswordPage from "./components/core/ResetPassword";
 import ProtectedRoute from "./components/core/ProtectedRoute";
 import ProtectedRouteStudent from "./components/core/ProtectedRouteStudent";
+import PublicRoute from "./components/core/PublicRoute";
 import PageNotFound from "./components/core/PageNotFound";
 
 function App() {
@@ -17,22 +18,22 @@ function App() {
   return (
     <main className="App">
       <Routes>
-        <Route path="/" element={<RolePage />} />
-        <Route path="/admin/login" element={<AdminLogin />} />
-        <Route path="/student/login" element={<StudentLogin />} />
-
+        
+        <Route element={<PublicRoute restricted={true} />}>
+          <Route path="/" element={<RolePage />} />
+          <Route path="/admin/login" element={<AdminLogin />} />
+          <Route path="/student/login" element={<StudentLogin />} />
+        </Route>
         <Route element={<ProtectedRoute />}>
           <Route path="/admin/dashboard" element={<AdminDashboard />} />
         </Route>
         <Route element={<ProtectedRouteStudent />}>
           <Route path="/student/dashboard" element={<StudentDashboard />} />
-          {/* <Route path="/student/generate-qr" element={<GenerateQRPage />} />
-          <Route path="/student/scan-qr" element={<ScanQRPage />} /> */}
         </Route>
 
         <Route
           path={
-            localStorage.getItem("forgetRole")==="admin"
+            localStorage.getItem("forgetRole") === "admin"
               ? `/reset-password/${forgetToken}`
               : `/reset-password-student/${forgetToken}`
           }

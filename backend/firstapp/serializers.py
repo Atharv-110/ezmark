@@ -220,9 +220,10 @@ class StudentMangementSectionSerializer(serializers.ModelSerializer):
 class AttendanceManagementSectionSerializer(serializers.ModelSerializer):
   roll_number = serializers.IntegerField()
   name = serializers.CharField()
+  email = serializers.CharField()
   class Meta:
       model = Attendance
-      fields = ['roll_number', 'name', 'status', 'date']
+      fields = ['roll_number', 'email', 'name', 'status', 'date']
 
 class StudentAfterLoginPanelSerializer(serializers.Serializer):
     Roll_Number = serializers.IntegerField()

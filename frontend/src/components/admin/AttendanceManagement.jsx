@@ -39,6 +39,7 @@ const AttendanceManagement = () => {
   const fetchTableData = async () => {
     const tableData = await getManageAttendance(dateString);
     setUsers(tableData);
+    console.log(tableData);
   };
 
   useEffect(() => {

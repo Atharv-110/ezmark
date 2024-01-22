@@ -22,7 +22,7 @@ const StudentDashboard = () => {
 
   useEffect(() => {
     fetchDashboardMetrics();
-  }, []);
+  }, [scanQR]);
 
   const fetchDashboardMetrics = async () => {
     try {

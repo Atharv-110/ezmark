@@ -63,18 +63,18 @@ const GenerateQRPage = ({ setGenerateQR }) => {
         </svg>
         <h1>Go Back</h1>
       </button>
-      <section className="panel_section flex items-center justify-center">
-        <div className="w-full bg-white shadow-lg p-6 rounded-md">
+      <section className="panel_section w-fit mx-auto flex items-center justify-center">
+        <div className="w-full bg-white shadow-lg p-8 rounded-md">
           {count == 0 ? (
             <div className="flex flex-col items-center gap-10">
-              <QRCode value={value + ""} />{" "}
-              <h1 className="text-xl md:text-2xl">
+              <QRCode value={value + ""} />
+              <h1 className="text-xl">
                 Re-generating QR in{" "}
                 <span className="font-semibold">{coolDown} seconds</span>
               </h1>
             </div>
           ) : (
-            <h1 className="text-xl md:text-2xl text-center">
+            <h1 className="text-xl text-center">
               Generating QR in{" "}
               <span className="font-semibold">{count} seconds</span>
             </h1>

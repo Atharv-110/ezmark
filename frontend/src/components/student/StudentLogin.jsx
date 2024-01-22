@@ -24,7 +24,7 @@ const StudentLogin = () => {
       // code for api fetch and check
 
       const token = await loginRole(login, role);
-      console.log(token);
+      // console.log(token);
       if (token) {
         // console.log(token.access);
         // console.log(token.refresh);

@@ -34,38 +34,45 @@ export const handleErrors = async (res) => {
   if (!res.ok) {
     const errorData = await res.json();
     console.log(errorData.error);
-    if (errorData.errors) {
-      if (errorData.errors.non_field_errors) {
-        toast.error(
-          errorData.errors.non_field_errors[0] ===
-            "Password and Confirm Password don't match"
-            ? "Confirm Password didn't Match"
-            : errorData.errors.non_field_errors[0] ===
-              "You are not a Registered User"
-            ? "Email not registered"
-            : errorData.errors.non_field_errors[0] ===
-              "Email or Password is not Valid"
-            ? "Invalid Credentials"
-            : ""
-        );
-      }
-      if (errorData.errors.email) {
-        toast.error(
-          errorData.errors.email[0] === "user with this Email already exists."
-            ? "User Already Exists"
-            : ""
-        );
-      }
-    }
-    if (errorData.error) {
+
+    const nonFieldErrors = errorData.errors?.non_field_errors || [];
+
+    // Handling non-field errors
+    if (nonFieldErrors.length > 0) {
+      const nonFieldError = nonFieldErrors[0];
+
       toast.error(
-        errorData.error === "Invalid QR code data."
+        nonFieldError === "Password and Confirm Password don't match"
+          ? "Confirm Password didn't Match"
+          : nonFieldError === "You are not a Registered User"
+          ? "Email not registered"
+          : nonFieldError === "Email or Password is not Valid"
+          ? "Invalid Credentials"
+          : ""
+      );
+    }
+
+    // Handling email errors
+    const emailError = errorData.errors?.email?.[0];
+    if (emailError) {
+      toast.error(
+        emailError === "user with this Email already exists."
+          ? "User Already Exists"
+          : ""
+      );
+    }
+
+    // Handling other errors
+    const generalError = errorData.error;
+    if (generalError) {
+      toast.error(
+        generalError === "Invalid QR code data."
           ? "QR Code Expired"
-          : errorData.error === "Device is outside from geofence location"
+          : generalError === "Device is outside from geofence location"
           ? "Device is not in Class"
-          : errorData.error === "Attendance already marked for today."
+          : generalError === "Attendance already marked for today."
           ? "Attendance Already Marked"
-          : "Device Error"
+          : generalError === "Device Error" ? "Device Error" : generalError
       );
     }
   }
@@ -191,6 +198,7 @@ export const resetPasswordAdmin = async (newPasswords) => {
       toast.success("Password Reset successful");
       const responseData = await res.json();
       localStorage.removeItem("forgetToken");
+      localStorage.removeItem("forgetRole");
       console.log(responseData);
       return responseData;
     } else {
