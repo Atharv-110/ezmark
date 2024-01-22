@@ -332,7 +332,7 @@ export const setScanQRAPI = async (data) => {
   }
 
   try {
-    const res = await fetch("http://127.0.0.1:8000/api/student/MarkAttendanceDynamicQRView/", {
+    const res = await fetch(`${API_URL}/student/MarkAttendanceDynamicQRView/`, {
       method: "POST",
       headers: {
         "Content-Type": "application/json",

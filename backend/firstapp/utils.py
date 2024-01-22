@@ -44,7 +44,9 @@ Subject: %s
             
 def is_within_geofence(latitude, longitude):
     geofence_center = (22.71532363393987, 75.84359868812682)
+    
     # 22.6042641, 75.6855095
+    # 22.71532363393987, 75.84359868812682
     geofence_radius = 1000
     distance = geodesic((latitude, longitude), geofence_center).meters
     print(distance, geofence_radius)

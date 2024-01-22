@@ -69,7 +69,7 @@ export const handleErrors = async (res) => {
         generalError === "Invalid QR code data."
           ? "QR Code Expired"
           : generalError === "Device is outside from geofence location"
-          ? "Device is not in Class"
+          ? "Device is not in Range"
           : generalError === "Attendance already marked for today."
           ? "Attendance Already Marked"
           : generalError === "Device Error" ? "Device Error" : generalError

@@ -7,14 +7,14 @@ const PageNotFound = () => {
       <img
         src="/images/bulb.png"
         alt="bulb image"
-        className="w-[300px] md:w-fit"
+        className="w-[200px] md:w-fit"
       />
       <div className="max-sm:mt-4 flex justify-center md:justify-normal items-center md:items-start flex-col gap-4 md:gap-10">
         <p className="text-lg">
           <span className="underline underline-offset-8 font-medium">404</span>{" "}
           | Page not Found
         </p>
-        <h1 className="text-5xl text-center md:text-left md:text-6xl font-semibold">
+        <h1 className="text-4xl text-center md:text-left md:text-6xl font-semibold">
           there is <br />
           light in here too
         </h1>
