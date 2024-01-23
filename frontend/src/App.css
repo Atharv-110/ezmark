@@ -51,6 +51,14 @@
   @apply flex justify-between items-center;
 }
 
+/* Hero Section Classes */
+.section_title {
+ @apply text-2xl md:text-4xl md:leading-[1.2] text-center md:tracking-wide font-semibold mb-2;
+}
+.section_subtitle {
+  @apply w-full md:w-1/2 max-sm:text-sm text-center text-gray-dark;
+}
+
 /* form classes */
 
 .form_input {
@@ -98,7 +106,7 @@
 /* Team card Styles */
 
 .team_card_icon {
-  @apply px-3 py-1.5 border-2 rounded-md text-lg border-primary-black text-primary-black hover:bg-primary-black hover:text-primary-white transition-effect;
+  @apply px-2 py-1 border-2 rounded-full border-primary-black text-primary-black hover:bg-primary-black hover:text-primary-white transition-effect;
 }
 
 input::-webkit-outer-spin-button,

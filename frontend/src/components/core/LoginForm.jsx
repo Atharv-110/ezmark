@@ -1,4 +1,5 @@
 import { useState } from "react";
+import { useNavigate } from "react-router-dom";
 
 const LoginForm = ({
   type,
@@ -12,11 +13,17 @@ const LoginForm = ({
   handleRegistration,
   forgetEmail,
   setForgetEmail,
-  handleForgetPassword
+  handleForgetPassword,
 }) => {
   const [forgot, setForgot] = useState(false);
+  const navigate = useNavigate();
   return (
     <div className="w-full max-sm:mx-[2%] md:w-[600px] mx-auto bg-white p-4 md:p-8 rounded-lg shadow-lg text-primary-black font-medium">
+      <div>
+        <button onClick={() => navigate(-1)} className="px-2 py-1 rounded-full border-2 text-gray-light border-gray-light hover:border-primary-black hover:text-primary-black transition-effect">
+          <i className="fa-solid fa-arrow-left-long"></i>
+        </button>
+      </div>
       <p className="flex-center">
         {role === "student" ? (
           <svg

@@ -37,7 +37,14 @@ const BenefitCard = ({ icon, title, desc }) => {
 
 const KeyBenefitSection = () => {
   return (
-    <section className="mt-6 w-full flex max-sm:flex-col justify-center items-center gap-6 md:gap-x-14">
+    <section className="mt-32 flex-center flex-col">
+      <h2 className="section_title">Key Benefits</h2>
+      <p className="section_subtitle">
+        The one and only force behind development of EZMark from scratch.
+        Recursively testing and upgrading the application for seamless and best
+        user experience.
+      </p>
+      <div className="w-full px-2 md:px-10 flex flex-col gap-y-6 md:flex-row justify-between mt-10">
       {benefits.map((item) => (
         <BenefitCard
           key={item.id}
@@ -46,6 +53,7 @@ const KeyBenefitSection = () => {
           desc={item.desc}
         />
       ))}
+      </div>
     </section>
   );
 };

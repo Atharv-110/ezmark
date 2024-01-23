@@ -1,4 +1,4 @@
-
+import { Link } from "react-router-dom";
 
 const HeroHeader = () => {
   return (
@@ -7,9 +7,9 @@ const HeroHeader = () => {
         <img src="/images/logo.png" alt="icon" className="w-12 md:w-14" />
         <h1 className="font-bold tracking-wide text-2xl">ezMark</h1>
       </div>
-      <button className="btn_bordered">
-        <h1>GitHub</h1>
-      </button>
+      <Link to="https://github.com/Atharv-110/ezmark" target="_blank" className="btn_bordered">
+        GitHub
+      </Link>
     </header>
   );
 };
