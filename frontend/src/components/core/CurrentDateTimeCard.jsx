@@ -33,7 +33,7 @@ const CurrentDateTimeCard = () => {
   };
 
   return (
-    <div className="h-full flex flex-col justify-between p-6 gap-2 bg-white rounded-md shadow-lg">
+    <div className="h-full flex flex-col justify-between p-6 gap-2 bg-white border-2 border-transparent hover:border-blue-400 transition-effect rounded-md shadow-lg">
       <div className="w-full flex items-center gap-4">
         {time.hours >= 18 ? (
           <svg

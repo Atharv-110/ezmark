@@ -42,7 +42,7 @@ const StudentDashboard = () => {
   };
 
   return (
-    <section className="w-full px-2 mt-24 md:mt-32">
+    <section className="w-full px-2 mt-24 md:mt-28">
       <Navbar
         role="student"
         name={dashboardMetrics.student}
@@ -72,7 +72,7 @@ const StudentDashboard = () => {
                 />
               </div>
               <div>
-                <h1 className="mb-4 text-xl font-medium">Quick access links</h1>
+                <h1 className="mb-4 text-xl max-sm:text-center font-medium">Quick access links</h1>
                 <div className="flex max-sm:flex-wrap max-sm:justify-center gap-2 md:gap-8 items-center">
                   <button
                     onClick={() => setGenerateQR(true)}

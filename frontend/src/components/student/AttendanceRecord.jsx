@@ -87,7 +87,7 @@ const AttendanceRecord = () => {
       </div>
       <div
         id="calendar"
-        className="w-full flex-center md:w-[300px] lg:w-[300px]"
+        className="w-full flex-center md:justify-end md:w-[300px] lg:w-[350px]"
       >
         <Calendar onChange={setCalDate} value={calDate} />
       </div>

@@ -59,7 +59,7 @@ const AdminDashboard = () => {
   };
 
   return (
-    <section className="w-full px-2 mt-24 md:mt-32">
+    <section className="w-full px-2 mt-24 md:mt-28">
       <Navbar role="admin" name={dashboardMetrics.admin} email={dashboardMetrics.email} />
       <section className="panel_section flex flex-col items-center md:items-stretch md:flex-row gap-8 md:gap-4 md:justify-between flex-wrap">
         <div className="hidden md:block w-full md:w-[200px] lg:w-[300px]">

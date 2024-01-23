@@ -51,7 +51,7 @@ const AdminLogin = () => {
 
   }
   return (
-    <section className="h-screen flex-center">
+    <section className="flex-center py-20">
       <LoginForm
         type={type}
         setType={setType}

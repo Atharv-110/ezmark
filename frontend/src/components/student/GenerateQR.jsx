@@ -45,26 +45,12 @@ const GenerateQRPage = ({ setGenerateQR }) => {
     <section className="w-full px-2 mt-24 md:mt-32">
       <button
         onClick={() => setGenerateQR(false)}
-        className="flex-center gap-1 capitalize font-medium underline leading-none transition-effect"
+        className="px-2 py-1 rounded-full border-2 text-gray-light border-gray-light hover:border-primary-black hover:text-primary-black transition-effect"
       >
-        <svg
-          xmlns="http://www.w3.org/2000/svg"
-          fill="none"
-          viewBox="0 0 24 24"
-          strokeWidth={1.5}
-          stroke="currentColor"
-          className="w-4 h-4"
-        >
-          <path
-            strokeLinecap="round"
-            strokeLinejoin="round"
-            d="M10.5 19.5 3 12m0 0 7.5-7.5M3 12h18"
-          />
-        </svg>
-        <h1>Go Back</h1>
+        <i className="fa-solid fa-arrow-left-long"></i>
       </button>
       <section className="panel_section w-fit mx-auto flex items-center justify-center">
-        <div className="w-full bg-white shadow-lg p-8 rounded-md">
+        <div className="w-full border-2 border-transparent hover:border-blue-400 transition-effect bg-white shadow-lg p-8 rounded-md">
           {count == 0 ? (
             <div className="flex flex-col items-center gap-10">
               <QRCode value={value + ""} />

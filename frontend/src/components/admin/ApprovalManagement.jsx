@@ -88,7 +88,7 @@ const ApprovalManagement = () => {
             base: "",
             wrapper: "min-h-[250px] bg-white shadow-lg rounded-md",
             th: "bg-primary-black text-primary-white rounded-none",
-            td: "data-[selected=true]:before:bg-gray-dark data-[selected=true]:text-white cursor-pointer ",
+            td: "data-[selected=true]:before:bg-blue-400 data-[selected=true]:text-primary-white cursor-pointer ",
           }}
         >
           <TableHeader>
@@ -111,13 +111,13 @@ const ApprovalManagement = () => {
         <h1 className="hidden md:block text-lg font-semibold">Action Centre</h1>
         <button
           onClick={approveRequest}
-          className="md:w-full bg-green-500 px-5 py-2 rounded-md text-white font-medium border-2 border-transparent hover:border-green-500 hover:bg-transparent hover:text-green-500"
+          className="md:w-full bg-green-400 px-5 py-2 rounded-md text-white font-medium border-2 border-transparent hover:border-green-400 hover:bg-transparent hover:text-green-400"
         >
           Approve Request
         </button>
         <button
           onClick={deleteRequest}
-          className="md:w-full bg-transparent text-red-500 border-2 border-red-500 px-5 py-2 rounded-md font-medium hover:bg-red-500 hover:text-white transition-effect"
+          className="md:w-full bg-transparent text-red-400 border-2 border-red-400 px-5 py-2 rounded-md font-medium hover:bg-red-400 hover:text-white transition-effect"
         >
           Delete Request
         </button>

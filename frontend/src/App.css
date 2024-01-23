@@ -1,13 +1,13 @@
 .App {
-  @apply absolute w-full min-h-screen md:px-[2%] lg:px-[3%] bg-primary-white text-primary-black;
+  @apply absolute w-full min-h-screen md:px-[2%] lg:px-[3%] bg-primary-white  text-primary-black;
 }
 
 .navbar_glass {
-  @apply bg-white border shadow-sm bg-opacity-15 bg-clip-padding backdrop-filter backdrop-blur-[5px];
+  @apply bg-white border bg-opacity-15 bg-clip-padding backdrop-filter backdrop-blur-[5px];
 }
 
 .bg_img {
-  background-image: url("/images/background.png");
+  background-image: url("/images/background.svg");
 }
 
 /* common css */
@@ -88,15 +88,15 @@
 }
 
 #calendar .react-calendar__tile--now {
-  @apply text-primary-white bg-primary-black;
+  @apply text-primary-white bg-primary-black rounded-md;
 }
 
 #calendar button {
-  @apply hover:bg-gray-dark hover:text-primary-white active:bg-primary-white active:text-primary-black;
+  @apply rounded-md hover:bg-gray-dark hover:text-primary-white active:bg-primary-white active:text-primary-black;
 }
 
 #calendar .react-calendar__tile--active {
-  @apply bg-green-500;
+  @apply  rounded-md bg-blue-400;
 }
 
 #calendar .react-calendar__month-view__days__day--weekend {

@@ -36,7 +36,7 @@ const RolePage = () => {
           </p>
         </div>
 
-        <div className="flex flex-col gap-y-2">
+        <div className="flex flex-col gap-y-4">
           <h3 className="text-center text-lg font-semibold">
             Login or Register as
           </h3>

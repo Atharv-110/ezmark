@@ -9,7 +9,7 @@ const Glimpse = () => {
       <img
         src="/images/hero_image.png"
         alt=""
-        className="mt-10 w-full md:w-[750px]"
+        className="mt-10 w-full md:w-[800px]"
       />
     </section>
   );
