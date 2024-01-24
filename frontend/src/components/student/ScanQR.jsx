@@ -14,7 +14,7 @@ const ScanQRPage = ({ setScanQR }) => {
 
   const handleScan = async (data) => {
     if (data) {
-      const parsedData = data.text; // or use the relevant property from the result object
+      const parsedData = data.text;
       setAllData({
         qr_code_data: parsedData,
         latitude: String(latitude),
