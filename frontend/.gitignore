@@ -26,3 +26,8 @@ dist-ssr
 myenv
 
 .dockerignore
+
+.scannerwork
+sonarqube/extensions
+sonarqube/data
+sonarqube/logs

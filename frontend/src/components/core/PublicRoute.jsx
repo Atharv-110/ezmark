@@ -9,8 +9,6 @@ import Footer from "./Footer";
 const PublicRoute = (restricted) => {
   const auth = { token: isAuthenticated(), token1: isAuthenticatedStudent() };
 
-  //   console.log(auth);
-
   return auth.token && restricted ? (
     <Navigate to="/admin/dashboard" />
   ) : auth.token1 && restricted ? (

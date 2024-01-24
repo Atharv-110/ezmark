@@ -30,7 +30,6 @@ const AdminLogin = () => {
   const handleRegistration = async (e) => {
     e.preventDefault();
     const registerData = register;
-    // await registerRole(registerData, role);
     const token = await registerRole(registerData, role);
     if (token) {
       setRegister({

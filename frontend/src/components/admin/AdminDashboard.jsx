@@ -20,7 +20,6 @@ const AdminDashboard = () => {
     absentStudents: "",
   });
 
-  // console.log(dashboardMetrics);
 
   const handleStudentSection = () => {
     setApprovalManagement(false);
@@ -38,6 +37,16 @@ const AdminDashboard = () => {
     setAttendanceManagement(false);
   };
 
+  let componentToRender;
+
+  if (attendanceManagement) {
+    componentToRender = <AttendanceManagement />;
+  } else if (approvalManagement) {
+    componentToRender = <ApprovalManagement />;
+  } else {
+    componentToRender = <StudentManagement />;
+  }
+
   useEffect(() => {
     fetchDashboardMetrics();
   }, []);
@@ -52,7 +61,6 @@ const AdminDashboard = () => {
         presentStudents: data.present_students,
         absentStudents: data.absent_students,
       });
-      // console.log("API response:", data);
     } catch (error) {
       console.error("API request failed:", error);
     }
@@ -60,16 +68,29 @@ const AdminDashboard = () => {
 
   return (
     <section className="w-full px-2 mt-24 md:mt-28">
-      <Navbar role="admin" name={dashboardMetrics.admin} email={dashboardMetrics.email} />
+      <Navbar
+        role="admin"
+        name={dashboardMetrics.admin}
+        email={dashboardMetrics.email}
+      />
       <section className="panel_section flex flex-col items-center md:items-stretch md:flex-row gap-8 md:gap-4 md:justify-between flex-wrap">
         <div className="hidden md:block w-full md:w-[200px] lg:w-[300px]">
           <CurrentDateTimeCard />
         </div>
         <div className="w-full md:w-[calc(100%-250px)] lg:w-[calc(100%-400px)] flex flex-col gap-4 lg:gap-10 justify-between">
           <div className="flex items-center justify-between">
-            <MetricCard title="Total Students" value={dashboardMetrics.totalStudents} />
-            <MetricCard title="Total Present" value={dashboardMetrics.presentStudents} />
-            <MetricCard title="Total Absent" value={dashboardMetrics.absentStudents}/>
+            <MetricCard
+              title="Total Students"
+              value={dashboardMetrics.totalStudents}
+            />
+            <MetricCard
+              title="Total Present"
+              value={dashboardMetrics.presentStudents}
+            />
+            <MetricCard
+              title="Total Absent"
+              value={dashboardMetrics.absentStudents}
+            />
           </div>
           <div>
             <h1 className="mb-4 text-xl font-medium">Quick Access Links</h1>
@@ -104,15 +125,7 @@ const AdminDashboard = () => {
           </div>
         </div>
       </section>
-      <section className="panel_section">
-        {attendanceManagement ? (
-          <AttendanceManagement />
-        ) : approvalManagement ? (
-          <ApprovalManagement />
-        ) : (
-          <StudentManagement />
-        )}
-      </section>
+      <section className="panel_section">{componentToRender}</section>
     </section>
   );
 };

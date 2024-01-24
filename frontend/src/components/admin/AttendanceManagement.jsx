@@ -13,8 +13,6 @@ import { getManageAttendance } from "../../services/get-service";
 import Calendar from "react-calendar";
 import "react-calendar/dist/Calendar.css";
 
-// import { users } from "./data";
-
 const AttendanceManagement = () => {
   const [users, setUsers] = useState([]);
   const [calDate, setCalDate] = useState(new Date());

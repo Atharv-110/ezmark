@@ -38,11 +38,9 @@ export const getAdminDashboardMetrics = async () => {
 
     if (res.ok) {
       const responseData = await res.json();
-
-      //   console.log(responseData);
       return responseData;
     } else {
-      //   await handleErrors(res);
+        await handleErrors(res);
     }
   } catch (error) {
     console.error(error);
@@ -173,7 +171,6 @@ export const getPendingApprovals = async () => {
     if (res.ok) {
       const responseData = await res.json();
       if (responseData.length > 0) {
-        // console.log(responseData);
         return responseData;
       } else {
         toast("No Pending requests", {
@@ -188,7 +185,6 @@ export const getPendingApprovals = async () => {
 };
 
 export const setPendingApprovals = async (email, type) => {
-  // const toastId = toast.loading("Loading...");
   const accessToken = getAccessToken();
 
   if (!accessToken) {
@@ -217,7 +213,6 @@ export const setPendingApprovals = async (email, type) => {
     });
 
     if (res.ok) {
-      // toast.dismiss(toastId);
       if (type === "POST") {
         toast.success(`${email} Approved`);
       }
@@ -264,10 +259,9 @@ export const getStudentDashboardMetrics = async () => {
     });
     if (res.ok) {
       const responseData = await res.json();
-      //   console.log(responseData);
       return responseData;
     } else {
-      //   await handleErrors(res);
+        await handleErrors(res);
     }
   } catch (error) {
     console.error(error);
@@ -305,7 +299,7 @@ export const getGenerateQR = async () => {
       console.log(responseData);
       return responseData;
     } else {
-      //   await handleErrors(res);
+        await handleErrors(res);
     }
   } catch (error) {
     console.error(error);
@@ -340,21 +334,18 @@ export const setScanQRAPI = async (data) => {
       },
       body: JSON.stringify(data),
     });
-    // console.log('Server Response:', res.error);
     if (res.ok) {
       const responseData = await res.json();
-      toast.success("Attendance Marked Successfully")
-      console.log('Response Data:', responseData);
+      toast.success("Attendance Marked Successfully");
+      console.log("Response Data:", responseData);
       return responseData;
     } else {
-      // console.log('Error Response:', res.error);
       await handleErrors(res);
     }
   } catch (error) {
     console.error(error);
   }
 };
-
 
 export const getAttendanceStudent = async (date) => {
   const accessToken = getAccessToken();
@@ -388,16 +379,9 @@ export const getAttendanceStudent = async (date) => {
 
     if (res.ok) {
       const responseData = await res.json();
-      if (responseData.length > 0) {
-        return responseData;
-      } else {
-        // toast(`No Attendance Found (${date})`, {
-        //   icon: "👎",
-        // });
-        return responseData;
-      }
+      return responseData;
     }
   } catch (error) {
     console.error(error);
   }
-}
+};

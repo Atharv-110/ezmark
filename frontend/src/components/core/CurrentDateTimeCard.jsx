@@ -32,6 +32,21 @@ const CurrentDateTimeCard = () => {
     });
   };
 
+  let daySuffix = "";
+  switch (time.day) {
+    case 1:
+      daySuffix = "st";
+      break;
+    case 2:
+      daySuffix = "nd";
+      break;
+    case 3:
+      daySuffix = "rd";
+      break;
+    default:
+      daySuffix = "th";
+  }
+
   return (
     <div className="h-full flex flex-col justify-between p-6 gap-2 bg-white border-2 border-transparent hover:border-blue-400 transition-effect rounded-md shadow-lg">
       <div className="w-full flex items-center gap-4">
@@ -77,36 +92,10 @@ const CurrentDateTimeCard = () => {
         <h1 className="text-xl font-semibold text-gray-dark">Today</h1>
         <h1>
           {time.day}
-          {time.day >= 4
-            ? "th"
-            : time.day == 1
-            ? "st"
-            : time.day == 2
-            ? "nd"
-            : time.day == 3
-            ? "rd"
-            : ""}
+          {daySuffix}
           <span> {time.month}</span>
         </h1>
         <h1>{time.year}</h1>
-      </div>
-      <div className="md:hidden text-xl font-bold">
-        <h1 className="">Today:</h1>
-        <h1>
-          {time.day}
-          {time.day >= 4
-            ? "th"
-            : time.day == 1
-            ? "st"
-            : time.day == 2
-            ? "nd"
-            : time.day == 3
-            ? "rd"
-            : ""}{" "}
-          <span>
-            {time.month} {time.year}
-          </span>
-        </h1>
       </div>
     </div>
   );

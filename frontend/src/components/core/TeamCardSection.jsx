@@ -92,9 +92,9 @@ const TeamCardSection = () => {
         user experience.
       </p>
       <div className="w-full mt-10 flex-center max-sm:flex-col gap-y-6 md:gap-x-[15%]">
-        {data.map((item, idx) => (
+        {data.map((item) => (
           <TeamCard
-            key={idx}
+            key={item.id}
             name={item.name}
             profile={item.profile}
             designation={item.designation}

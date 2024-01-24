@@ -7,7 +7,6 @@ import {
   TableRow,
   TableCell,
   Pagination,
-  getKeyValue,
 } from "@nextui-org/react";
 
 import Calendar from "react-calendar";
@@ -17,7 +16,7 @@ import { getAttendanceStudent } from "../../services/get-service";
 const AttendanceRecord = () => {
   const [calDate, setCalDate] = useState(new Date());
   const [page, setPage] = useState(1);
-  const [attendanceData, setAttendanceData] = useState([]); // New state for attendance data
+  const [attendanceData, setAttendanceData] = useState([]);
   const rowsPerPage = 10;
 
   const year = calDate.getFullYear();
@@ -73,8 +72,8 @@ const AttendanceRecord = () => {
           }}
         >
           <TableHeader>
-            <TableColumn key="requested_date">NAME</TableColumn>
-            <TableColumn key="attendance_status">ROLE</TableColumn>
+            <TableColumn key="requested_date">Date</TableColumn>
+            <TableColumn key="attendance_status">Status</TableColumn>
           </TableHeader>
           <TableBody items={items}>
             {(item) => (

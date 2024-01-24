@@ -22,12 +22,8 @@ const StudentLogin = () => {
     e.preventDefault();
     if (login) {
       // code for api fetch and check
-
       const token = await loginRole(login, role);
-      // console.log(token);
       if (token) {
-        // console.log(token.access);
-        // console.log(token.refresh);
         navigate("/student/dashboard");
       }
     }
@@ -53,58 +49,6 @@ const StudentLogin = () => {
 
   }
 
-  // const handleRegistration = async (e) => {
-  //   e.preventDefault();
-  //   // role = "/student/"
-  //   try {
-  //     const res = await fetch("http://127.0.0.1:8000/api/register/student/", {
-  //       method: "POST",
-  //       headers: {
-  //         "Content-Type": "application/json",
-  //         // "Authorization": `Bearer`
-  //       },
-  //       body: JSON.stringify(register),
-  //     });
-
-  //     if (res.ok) {
-  //       toast.success("Registration Done!");
-  //       const rs = await res.json();
-  //       console.log(rs.token);
-  //     }
-
-  //     if (!res.ok) {
-  //       const errorData = await res.json();
-  //       if (errorData.errors) {
-  //         if (errorData.errors.non_field_errors) {
-  //           toast.error(
-  //             errorData.errors.non_field_errors[0] ===
-  //               "Password and Confirm Password don't match"
-  //               ? "Confirm Password did't Match"
-  //               : ""
-  //           );
-  //         }
-  //         if (errorData.errors.email[0]) {
-  //           toast.error(
-  //             errorData.errors.email[0] ===
-  //               "user with this Email already exists."
-  //               ? "User Already Exist"
-  //               : ""
-  //           );
-  //         }
-  //       }
-  //     }
-  //     setType("login");
-  //     setRegister({
-  //       email: "",
-  //       name: "",
-  //       mobile_number: "",
-  //       password: "",
-  //       password2: "",
-  //     });
-  //   } catch (error) {
-  //     // console.error(error);
-  //   }
-  // };
   return (
     <section className="flex-center py-20">
       <LoginForm

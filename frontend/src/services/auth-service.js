@@ -35,48 +35,48 @@ export const handleErrors = async (res) => {
     const errorData = await res.json();
     console.log(errorData.error);
 
-    const nonFieldErrors = errorData.errors?.non_field_errors || [];
+    const handleNonFieldErrors = () => {
+      const nonFieldErrors = errorData.errors?.non_field_errors || [];
+      if (nonFieldErrors.length > 0) {
+        const nonFieldError = nonFieldErrors[0];
+        const errorMessages = {
+          "Password and Confirm Password don't match": "Confirm Password didn't Match",
+          'You are not a Registered User': 'Email not registered',
+          'Email or Password is not Valid': 'Invalid Credentials',
+        };
+        toast.error(errorMessages[nonFieldError] || '');
+      }
+    };
 
-    // Handling non-field errors
-    if (nonFieldErrors.length > 0) {
-      const nonFieldError = nonFieldErrors[0];
+    const handleEmailErrors = () => {
+      const emailError = errorData.errors?.email?.[0];
+      if (emailError) {
+        const errorMessages = {
+          'user with this Email already exists.': 'User Already Exists',
+        };
+        toast.error(errorMessages[emailError] || '');
+      }
+    };
 
-      toast.error(
-        nonFieldError === "Password and Confirm Password don't match"
-          ? "Confirm Password didn't Match"
-          : nonFieldError === "You are not a Registered User"
-          ? "Email not registered"
-          : nonFieldError === "Email or Password is not Valid"
-          ? "Invalid Credentials"
-          : ""
-      );
-    }
+    const handleOtherErrors = () => {
+      const generalError = errorData.error;
+      if (generalError) {
+        const errorMessages = {
+          'Invalid QR code data.': 'QR Code Expired',
+          'Device is outside from geofence location': 'Device is not in Range',
+          'Attendance already marked for today.': 'Attendance Already Marked',
+          'Device Error': 'Device Error',
+        };
+        toast.error(errorMessages[generalError] || generalError);
+      }
+    };
 
-    // Handling email errors
-    const emailError = errorData.errors?.email?.[0];
-    if (emailError) {
-      toast.error(
-        emailError === "user with this Email already exists."
-          ? "User Already Exists"
-          : ""
-      );
-    }
-
-    // Handling other errors
-    const generalError = errorData.error;
-    if (generalError) {
-      toast.error(
-        generalError === "Invalid QR code data."
-          ? "QR Code Expired"
-          : generalError === "Device is outside from geofence location"
-          ? "Device is not in Range"
-          : generalError === "Attendance already marked for today."
-          ? "Attendance Already Marked"
-          : generalError === "Device Error" ? "Device Error" : generalError
-      );
-    }
+    handleNonFieldErrors();
+    handleEmailErrors();
+    handleOtherErrors();
   }
 };
+
 
 export const registerRole = async (register, role) => {
   console.log(register);
@@ -169,7 +169,6 @@ export const forgetPasswordRole = async (email, role) => {
       console.log(
         responseData.reset_link.substring(45, responseData.reset_link.length)
       );
-      // return responseData.token;
     } else {
       await handleErrors(res);
     }
@@ -292,7 +291,7 @@ export const isAccessTokenValid = () => {
 
   try {
     const decodedToken = jwtDecode(accessToken);
-    // Check expiration time (exp) or any other criteria based on your server setup
+    // Check expiration time (exp)
     const currentTime = Date.now() / 1000;
     return decodedToken.exp > currentTime;
   } catch (error) {
