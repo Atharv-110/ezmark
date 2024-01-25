@@ -27,7 +27,7 @@ const benefits = [
 
 const BenefitCard = ({ icon, title, desc }) => {
   return (
-    <div className="flex-center flex-col border-2 border-transparent gap-y-2 md:w-[20%] bg-white text-primary-black shadow-lg p-4 rounded-md text-6xl hover:border-blue-400 transition-effect">
+    <div className="md:place-self-center flex-center flex-col border-2 border-transparent gap-y-2 md:w-[500px] bg-white text-primary-black shadow-lg p-4 rounded-md text-6xl hover:border-blue-400 transition-effect">
       <i className={icon}></i>
       <h1 className="text-center text-2xl font-semibold">{title}</h1>
       <p className="text-center text-base text-gray-dark">{desc}</p>
@@ -44,15 +44,15 @@ const KeyBenefitSection = () => {
         Recursively testing and upgrading the application for seamless and best
         user experience.
       </p>
-      <div className="w-full px-2 md:px-10 flex flex-col gap-y-6 md:flex-row justify-between mt-10">
-      {benefits.map((item) => (
-        <BenefitCard
-          key={item.id}
-          icon={item.iconClass}
-          title={item.title}
-          desc={item.desc}
-        />
-      ))}
+      <div className="w-full px-2 md:px-10 gap-y-4 grid md:grid-cols-2 mt-10">
+        {benefits.map((item) => (
+          <BenefitCard
+            key={item.id}
+            icon={item.iconClass}
+            title={item.title}
+            desc={item.desc}
+          />
+        ))}
       </div>
     </section>
   );

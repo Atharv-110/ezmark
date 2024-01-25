@@ -17,7 +17,7 @@ const RolePage = () => {
   }, [role]);
 
   return (
-    <section className="bg_img mb-20 max-sm:px-2 text-primary-black">
+    <section className="bg_img mb-20 max-sm:px-2 text-primary-black flex flex-col gap-4">
       <section className="h-screen flex-center flex-col gap-16">
         <div className="text-sm md:text-base flex-center gap-2 bg-white w-fit py-2 px-2 md:px-3 rounded-lg shadow-md">
           <div className="bg-blue-400 px-2 md:px-4 w-fit rounded-md text-primary-white font-medium">
