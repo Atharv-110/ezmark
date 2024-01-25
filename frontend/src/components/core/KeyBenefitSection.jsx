@@ -27,7 +27,7 @@ const benefits = [
 
 const BenefitCard = ({ icon, title, desc }) => {
   return (
-    <div className="md:place-self-center flex-center flex-col border-2 border-transparent gap-y-2 md:w-[500px] bg-white text-primary-black shadow-lg p-4 rounded-md text-6xl hover:border-blue-400 transition-effect">
+    <div className="md:place-self-center flex-center flex-col border-2 border-transparent gap-y-2 md:w-[500px] bg-white text-primary-black shadow-md p-4 rounded-md text-6xl hover:border-blue-400 transition-effect">
       <i className={icon}></i>
       <h1 className="text-center text-2xl font-semibold">{title}</h1>
       <p className="text-center text-base text-gray-dark">{desc}</p>
@@ -40,11 +40,9 @@ const KeyBenefitSection = () => {
     <section className="mt-32 flex-center flex-col">
       <h2 className="section_title">Key Benefits</h2>
       <p className="section_subtitle">
-        The one and only force behind development of EZMark from scratch.
-        Recursively testing and upgrading the application for seamless and best
-        user experience.
+        Our application provides all the basic to advanced features that will surely increase the user experience. This is the revolution for the physical attendance procedure.
       </p>
-      <div className="w-full px-2 md:px-10 gap-y-4 grid md:grid-cols-2 mt-10">
+      <div className="w-full px-2 gap-y-4 grid-cols-1 md:gap-y-10 grid md:grid-cols-2 mt-10">
         {benefits.map((item) => (
           <BenefitCard
             key={item.id}
