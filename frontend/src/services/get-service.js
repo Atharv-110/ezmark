@@ -8,21 +8,18 @@ import toast from "react-hot-toast";
 
 const API_URL = "https://attendence-m004.onrender.com/api";
 
-// Admin GET/POST/PUT Requests
+// Admin GET/POST/PUT/DELETE Requests
 export const getAdminDashboardMetrics = async () => {
   const accessToken = getAccessToken();
 
   if (!accessToken) {
-    // If there is no access token, handle as needed (e.g., redirect to login)
     return Promise.reject("No access token available");
   }
 
   if (!isAccessTokenValid()) {
-    // Attempt to refresh the access token
     const refreshedAccessToken = await refreshTokens();
 
     if (!refreshedAccessToken) {
-      // If token refresh fails, handle as needed (e.g., redirect to login)
       return Promise.reject("Token refresh failed");
     }
   }
@@ -51,16 +48,13 @@ export const getManageStudents = async (search) => {
   const accessToken = getAccessToken();
 
   if (!accessToken) {
-    // If there is no access token, handle as needed (e.g., redirect to login)
     return Promise.reject("No access token available");
   }
 
   if (!isAccessTokenValid()) {
-    // Attempt to refresh the access token
     const refreshedAccessToken = await refreshTokens();
 
     if (!refreshedAccessToken) {
-      // If token refresh fails, handle as needed (e.g., redirect to login)
       return Promise.reject("Token refresh failed");
     }
   }
@@ -99,7 +93,6 @@ export const getManageAttendance = async (date) => {
   const accessToken = getAccessToken();
 
   if (!accessToken) {
-    // If there is no access token, handle as needed (e.g., redirect to login)
     return Promise.reject("No access token available");
   }
 
@@ -108,7 +101,6 @@ export const getManageAttendance = async (date) => {
     const refreshedAccessToken = await refreshTokens();
 
     if (!refreshedAccessToken) {
-      // If token refresh fails, handle as needed (e.g., redirect to login)
       return Promise.reject("Token refresh failed");
     }
   }
@@ -145,7 +137,6 @@ export const getPendingApprovals = async () => {
   const accessToken = getAccessToken();
 
   if (!accessToken) {
-    // If there is no access token, handle as needed (e.g., redirect to login)
     return Promise.reject("No access token available");
   }
 
@@ -154,7 +145,6 @@ export const getPendingApprovals = async () => {
     const refreshedAccessToken = await refreshTokens();
 
     if (!refreshedAccessToken) {
-      // If token refresh fails, handle as needed (e.g., redirect to login)
       return Promise.reject("Token refresh failed");
     }
   }
@@ -188,16 +178,13 @@ export const setPendingApprovals = async (email, type) => {
   const accessToken = getAccessToken();
 
   if (!accessToken) {
-    // If there is no access token, handle as needed (e.g., redirect to login)
     return Promise.reject("No access token available");
   }
 
   if (!isAccessTokenValid()) {
-    // Attempt to refresh the access token
     const refreshedAccessToken = await refreshTokens();
 
     if (!refreshedAccessToken) {
-      // If token refresh fails, handle as needed (e.g., redirect to login)
       return Promise.reject("Token refresh failed");
     }
   }
@@ -230,21 +217,18 @@ export const setPendingApprovals = async (email, type) => {
   }
 };
 
-// Student GET/POST/PUT Requests
+// Student GET/POST/PUT/DELETE Requests
 export const getStudentDashboardMetrics = async () => {
   const accessToken = getAccessToken();
 
   if (!accessToken) {
-    // If there is no access token, handle as needed (e.g., redirect to login)
     return Promise.reject("No access token available");
   }
 
   if (!isAccessTokenValid()) {
-    // Attempt to refresh the access token
     const refreshedAccessToken = await refreshTokens();
 
     if (!refreshedAccessToken) {
-      // If token refresh fails, handle as needed (e.g., redirect to login)
       return Promise.reject("Token refresh failed");
     }
   }
@@ -272,16 +256,13 @@ export const getGenerateQR = async () => {
   const accessToken = getAccessToken();
 
   if (!accessToken) {
-    // If there is no access token, handle as needed (e.g., redirect to login)
     return Promise.reject("No access token available");
   }
 
   if (!isAccessTokenValid()) {
-    // Attempt to refresh the access token
     const refreshedAccessToken = await refreshTokens();
 
     if (!refreshedAccessToken) {
-      // If token refresh fails, handle as needed (e.g., redirect to login)
       return Promise.reject("Token refresh failed");
     }
   }
@@ -311,16 +292,13 @@ export const setScanQRAPI = async (data) => {
   console.log(JSON.stringify(data));
 
   if (!accessToken) {
-    // If there is no access token, handle as needed (e.g., redirect to login)
     return Promise.reject("No access token available");
   }
 
   if (!isAccessTokenValid()) {
-    // Attempt to refresh the access token
     const refreshedAccessToken = await refreshTokens();
 
     if (!refreshedAccessToken) {
-      // If token refresh fails, handle as needed (e.g., redirect to login)
       return Promise.reject("Token refresh failed");
     }
   }
@@ -351,16 +329,13 @@ export const getAttendanceStudent = async (date) => {
   const accessToken = getAccessToken();
 
   if (!accessToken) {
-    // If there is no access token, handle as needed (e.g., redirect to login)
     return Promise.reject("No access token available");
   }
 
   if (!isAccessTokenValid()) {
-    // Attempt to refresh the access token
     const refreshedAccessToken = await refreshTokens();
 
     if (!refreshedAccessToken) {
-      // If token refresh fails, handle as needed (e.g., redirect to login)
       return Promise.reject("Token refresh failed");
     }
   }

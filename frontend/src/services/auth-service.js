@@ -40,11 +40,12 @@ export const handleErrors = async (res) => {
       if (nonFieldErrors.length > 0) {
         const nonFieldError = nonFieldErrors[0];
         const errorMessages = {
-          "Password and Confirm Password don't match": "Confirm Password didn't Match",
-          'You are not a Registered User': 'Email not registered',
-          'Email or Password is not Valid': 'Invalid Credentials',
+          "Password and Confirm Password don't match":
+            "Confirm Password didn't Match",
+          "You are not a Registered User": "Email not registered",
+          "Email or Password is not Valid": "Invalid Credentials",
         };
-        toast.error(errorMessages[nonFieldError] || '');
+        toast.error(errorMessages[nonFieldError] || "");
       }
     };
 
@@ -52,9 +53,9 @@ export const handleErrors = async (res) => {
       const emailError = errorData.errors?.email?.[0];
       if (emailError) {
         const errorMessages = {
-          'user with this Email already exists.': 'User Already Exists',
+          "user with this Email already exists.": "User Already Exists",
         };
-        toast.error(errorMessages[emailError] || '');
+        toast.error(errorMessages[emailError] || "");
       }
     };
 
@@ -62,10 +63,10 @@ export const handleErrors = async (res) => {
       const generalError = errorData.error;
       if (generalError) {
         const errorMessages = {
-          'Invalid QR code data.': 'QR Code Expired',
-          'Device is outside from geofence location': 'Device is not in Range',
-          'Attendance already marked for today.': 'Attendance Already Marked',
-          'Device Error': 'Device Error',
+          "Invalid QR code data.": "QR Code Expired",
+          "Device is outside from geofence location": "Device is not in Range",
+          "Attendance already marked for today.": "Attendance Already Marked",
+          "Device Error": "Device Error",
         };
         toast.error(errorMessages[generalError] || generalError);
       }
@@ -76,7 +77,6 @@ export const handleErrors = async (res) => {
     handleOtherErrors();
   }
 };
-
 
 export const registerRole = async (register, role) => {
   console.log(register);
@@ -141,7 +141,6 @@ export const forgetPasswordRole = async (email, role) => {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
-        // Include additional headers if needed (e.g., authorization)
       },
       body: JSON.stringify({ email }),
     });
@@ -166,9 +165,6 @@ export const forgetPasswordRole = async (email, role) => {
               responseData.reset_link.length
             )
           );
-      console.log(
-        responseData.reset_link.substring(49, responseData.reset_link.length)
-      );
     } else {
       toast.dismiss(toastId);
       await handleErrors(res);
@@ -187,7 +183,6 @@ export const resetPasswordAdmin = async (newPasswords) => {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
-          // Include additional headers if needed (e.g., authorization)
         },
         body: JSON.stringify(newPasswords),
       }
@@ -199,7 +194,6 @@ export const resetPasswordAdmin = async (newPasswords) => {
       const responseData = await res.json();
       localStorage.removeItem("forgetToken");
       localStorage.removeItem("forgetRole");
-      console.log(responseData);
       return responseData;
     } else {
       await handleErrors(res);
@@ -220,7 +214,6 @@ export const resetPasswordStudent = async (newPasswords) => {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
-          // Include additional headers if needed (e.g., authorization)
         },
         body: JSON.stringify(newPasswords),
       }
@@ -231,7 +224,7 @@ export const resetPasswordStudent = async (newPasswords) => {
       toast.success("Password Reset successful");
       const responseData = await res.json();
       localStorage.removeItem("forgetToken");
-      console.log(responseData);
+      localStorage.removeItem("forgetRole");
       return responseData;
     } else {
       await handleErrors(res);
@@ -243,6 +236,8 @@ export const resetPasswordStudent = async (newPasswords) => {
 
 export const logout = () => {
   clearTokens();
+  localStorage.removeItem("forgetToken");
+  localStorage.removeItem("forgetRole");
   toast.success("Logged out!");
 };
 
