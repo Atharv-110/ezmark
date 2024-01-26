@@ -1,6 +1,7 @@
 import { jwtDecode } from "jwt-decode";
 import { toast } from "react-hot-toast";
 
+// const API_BASE_URL = "http://127.0.0.1:8000/api";
 const API_BASE_URL = "https://attendence-m004.onrender.com/api";
 
 const storeTokens = ({ access, refresh }) => {
@@ -155,19 +156,19 @@ export const forgetPasswordRole = async (email, role) => {
         ? localStorage.setItem(
             "forgetToken",
             responseData.reset_link.substring(
-              37,
+              26,
               responseData.reset_link.length
             )
           )
         : localStorage.setItem(
             "forgetToken",
             responseData.reset_link.substring(
-              45,
+              26,
               responseData.reset_link.length
             )
           );
       console.log(
-        responseData.reset_link.substring(45, responseData.reset_link.length)
+        responseData.reset_link.substring(26, responseData.reset_link.length)
       );
     } else {
       await handleErrors(res);
