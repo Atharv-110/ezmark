@@ -64,6 +64,7 @@ const ScanQRPage = ({ setScanQR }) => {
             <QrReader
               delay={100}
               style={previewStyle}
+              facingMode="environment"
               onError={handleError}
               onScan={handleScan}
             />
