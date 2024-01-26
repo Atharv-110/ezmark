@@ -166,9 +166,9 @@ export const forgetPasswordRole = async (email, role) => {
               responseData.reset_link.length
             )
           );
-      console.log(
-        responseData.reset_link.substring(26, responseData.reset_link.length)
-      );
+      // console.log(
+      //   responseData.reset_link.substring(26, responseData.reset_link.length)
+      // );
     } else {
       await handleErrors(res);
     }
