@@ -6,7 +6,8 @@ import {
 } from "./auth-service";
 import toast from "react-hot-toast";
 
-const API_URL = "http://127.0.0.1:8000/api";
+// const API_URL = "http://127.0.0.1:8000/api";
+const API_URL = "https://attendence-m004.onrender.com/api";
 
 // Admin GET/POST/PUT Requests
 export const getAdminDashboardMetrics = async () => {

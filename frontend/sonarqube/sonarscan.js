@@ -1,4 +1,3 @@
-// const scanner = require('sonarqube-scanner');
 import scanner from 'sonarqube-scanner'
 import process from 'process';
 
