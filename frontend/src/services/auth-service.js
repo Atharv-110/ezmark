@@ -170,6 +170,7 @@ export const forgetPasswordRole = async (email, role) => {
         responseData.reset_link.substring(49, responseData.reset_link.length)
       );
     } else {
+      toast.dismiss(toastId);
       await handleErrors(res);
     }
   } catch (error) {
