@@ -178,7 +178,7 @@ export const resetPasswordAdmin = async (newPasswords) => {
   const toastId = toast.loading("Loading...");
   try {
     const res = await fetch(
-      `${API_BASE_URL}/reset-password/${localStorage.getItem("forgetToken")}/`,
+      `${API_BASE_URL}/reset-password-admin/${localStorage.getItem("forgetToken")}/`,
       {
         method: "POST",
         headers: {
