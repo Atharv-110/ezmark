@@ -1,9 +1,14 @@
-import React from "react";
+import Loader from "./Loader";
 
-const MetricCard = ({ title, value }) => {
+const MetricCard = ({ title, value, loading }) => {
   return (
     <div className="metric_card w-[30%] shadow-lg rounded-md flex flex-col gap-3 p-3 md:p-4">
-      <h1 className="text-2xl md:text-4xl font-bold">{value}</h1>
+      {loading ? (
+        <Loader />
+      ) : (
+        <h1 className="text-2xl md:text-4xl font-bold">{value}</h1>
+      )}
+
       <h1 className="text-sm md:text-2xl font-semibold">{title}</h1>
     </div>
   );

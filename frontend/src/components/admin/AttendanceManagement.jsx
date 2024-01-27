@@ -14,6 +14,7 @@ import Calendar from "react-calendar";
 import "react-calendar/dist/Calendar.css";
 
 const AttendanceManagement = () => {
+  const [loading, setLoading] = useState(true);
   const [users, setUsers] = useState([]);
   const [calDate, setCalDate] = useState(new Date());
   const [page, setPage] = useState(1);
@@ -37,7 +38,9 @@ const AttendanceManagement = () => {
   const fetchTableData = async () => {
     const tableData = await getManageAttendance(dateString);
     setUsers(tableData);
+    setLoading(false);
   };
+  console.log(calDate);
 
   useEffect(() => {
     fetchTableData();
@@ -76,7 +79,10 @@ const AttendanceManagement = () => {
             <TableColumn key="email">Email</TableColumn>
             <TableColumn key="status">STATUS</TableColumn>
           </TableHeader>
-          <TableBody emptyContent={"No Attendance Data Found!"} items={items}>
+          <TableBody
+            emptyContent={loading ? "Loading..." : "No Attendance Data Found!"}
+            items={items}
+          >
             {(item) => (
               <TableRow key={item.roll_number}>
                 {(columnKey) => (
@@ -91,7 +97,7 @@ const AttendanceManagement = () => {
         id="calendar"
         className="w-full flex-center md:w-[280px] lg:w-[350px]"
       >
-        <Calendar onChange={setCalDate} value={calDate} />
+        <Calendar onChange={setCalDate} value={calDate}  />
       </div>
     </div>
   );

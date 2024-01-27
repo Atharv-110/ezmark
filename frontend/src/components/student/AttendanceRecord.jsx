@@ -14,6 +14,7 @@ import "react-calendar/dist/Calendar.css";
 import { getAttendanceStudent } from "../../services/get-service";
 
 const AttendanceRecord = () => {
+  const [loading, setLoading] = useState(true);
   const [calDate, setCalDate] = useState(new Date());
   const [page, setPage] = useState(1);
   const [attendanceData, setAttendanceData] = useState([]);
@@ -37,6 +38,7 @@ const AttendanceRecord = () => {
     try {
       const tableData = await getAttendanceStudent(dateString);
       setAttendanceData([tableData]);
+      setLoading(false);
     } catch (error) {
       console.error("Error fetching attendance data:", error);
     }
@@ -75,7 +77,10 @@ const AttendanceRecord = () => {
             <TableColumn key="requested_date">Date</TableColumn>
             <TableColumn key="attendance_status">Status</TableColumn>
           </TableHeader>
-          <TableBody items={items}>
+          <TableBody
+            emptyContent={loading ? "Loading..." : "No Attendance Record Found"}
+            items={items}
+          >
             {(item) => (
               <TableRow key={item.requested_date}>
                 {(columnKey) => <TableCell>{item[columnKey]}</TableCell>}

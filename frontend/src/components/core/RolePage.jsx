@@ -61,7 +61,7 @@ const RolePage = () => {
               </svg>
               <h2 className="text-center text-lg font-medium">Student</h2>
             </button>
-            <button
+            {/* <button
               onClick={() => setRole("admin")}
               className="btn_bordered rounded-lg gap-1 flex items-center px-4 py-2"
             >
@@ -80,7 +80,7 @@ const RolePage = () => {
                 />
               </svg>
               <h2 className="text-center text-lg font-medium">Admin</h2>
-            </button>
+            </button> */}
           </div>
         </div>
       </section>

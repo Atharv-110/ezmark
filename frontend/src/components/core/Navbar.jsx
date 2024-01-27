@@ -1,5 +1,6 @@
 import { logout } from "../../services/auth-service";
 import { useNavigate } from "react-router-dom";
+import Loader from "./Loader";
 
 const Navbar = ({ role, name, email }) => {
   const navigate = useNavigate();
@@ -17,9 +18,10 @@ const Navbar = ({ role, name, email }) => {
       </div>
       <div className="flex-center gap-2">
         <div className="flex items-center gap-2 max-sm:border-l-2 pl-2 md:border-r-2 pr-2">
-          <button className="btn text-lg px-3 py-1 font-semibold uppercase">
+          {name ? <button className="btn text-lg px-3 py-1 font-semibold uppercase">
             {name.substring(0, 1)}
-          </button>
+          </button> : <Loader />}
+          
           <button
             onClick={handleLogout}
             className="md:hidden btn_bordered p-1.5"

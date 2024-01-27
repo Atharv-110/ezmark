@@ -10,6 +10,7 @@ import ScanQRPage from "./ScanQR";
 const StudentDashboard = () => {
   const [generateQR, setGenerateQR] = useState(false);
   const [scanQR, setScanQR] = useState(false);
+  const [loading, setLoading] = useState(true);
 
   const [dashboardMetrics, setDashboardMetrics] = useState({
     student: "",
@@ -18,6 +19,8 @@ const StudentDashboard = () => {
     presentDays: "",
     absentDays: "",
   });
+
+  console.log(dashboardMetrics.absentDays);
 
   useEffect(() => {
     fetchDashboardMetrics();
@@ -33,6 +36,7 @@ const StudentDashboard = () => {
         presentDays: data.present_days,
         absentDays: data.absent_days,
       });
+      setLoading(false);
     } catch (error) {
       console.error("API request failed:", error);
     }
@@ -54,14 +58,17 @@ const StudentDashboard = () => {
           <div className="w-full md:w-[calc(100%-250px)] lg:w-[calc(100%-400px)] flex flex-col gap-4 lg:gap-10 justify-between">
             <div className="flex items-center justify-between">
               <MetricCard
+                loading={loading}
                 title="Total Days"
                 value={dashboardMetrics.totalDays}
               />
               <MetricCard
+                loading={loading}
                 title="Present Days"
                 value={dashboardMetrics.presentDays}
               />
               <MetricCard
+                loading={loading}
                 title="Absent Days"
                 value={dashboardMetrics.absentDays}
               />
@@ -91,7 +98,7 @@ const StudentDashboard = () => {
           <h1 className="mb-2 text-xl md:text-3xl text-center md:text-left font-bold">
             Your Attendance
           </h1>
-          <AttendanceRecord />
+          <AttendanceRecord loading={loading} />
         </section>
       </>
     );

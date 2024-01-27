@@ -19,6 +19,7 @@ import toast from "react-hot-toast";
 
 const ApprovalManagement = () => {
   const [response, setResponse] = useState();
+  const [loading, setLoading] = useState(true);
   const [users, setUsers] = useState([]);
   const [selectRow, setSelectRow] = useState([]);
   const [page, setPage] = useState(1);
@@ -96,7 +97,7 @@ const ApprovalManagement = () => {
             <TableColumn key="email">EMAIL</TableColumn>
             <TableColumn key="mobile_number">MOBILE NO.</TableColumn>
           </TableHeader>
-          <TableBody emptyContent="No Pending Requests Found" items={items}>
+          <TableBody emptyContent={loading ? "Loading..." : "No Pending Requests Found"} items={items}>
             {(item) => (
               <TableRow key={item.email}>
                 {(columnKey) => (

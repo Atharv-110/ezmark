@@ -90,6 +90,7 @@ export const getManageStudents = async (search) => {
 };
 
 export const getManageAttendance = async (date) => {
+  const toastId = toast.loading("Searching...");
   const accessToken = getAccessToken();
 
   if (!accessToken) {
@@ -119,6 +120,7 @@ export const getManageAttendance = async (date) => {
 
     if (res.ok) {
       const responseData = await res.json();
+      toast.dismiss(toastId);
       if (responseData.length > 0) {
         return responseData;
       } else {

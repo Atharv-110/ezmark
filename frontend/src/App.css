@@ -20,11 +20,11 @@
   @apply bg-primary-black border-2 border-transparent text-primary-white rounded-md hover:bg-transparent hover:text-primary-black hover:border-2 hover:border-primary-black transition-effect py-2 px-4;
 }
 .toggle_btn {
-  @apply bg-primary-black text-xs px-[5px] md:text-base md:w-[30%] border-2 border-transparent text-primary-white rounded-md py-2 md:px-4;
+  @apply bg-primary-black text-sm px-[5px] md:text-base md:w-[30%] border-2 border-transparent text-primary-white rounded-md py-2 md:px-4;
 }
 
 .toggle_btn_bordered {
-  @apply bg-transparent text-xs px-[5px] md:text-base md:w-[30%] border-2 border-primary-black text-primary-black rounded-md py-2 md:px-4;
+  @apply bg-transparent text-sm px-[5px] md:text-base md:w-[30%] border-2 border-primary-black text-primary-black rounded-md py-2 md:px-4;
 }
 
 .btn_bordered {

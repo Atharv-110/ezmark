@@ -79,6 +79,7 @@ export const handleErrors = async (res) => {
 };
 
 export const registerRole = async (register, role) => {
+  const toastId = toast.loading("Registering...");
   console.log(register);
   try {
     const res = await fetch(`${API_BASE_URL}/register/${role}/`, {
@@ -91,6 +92,7 @@ export const registerRole = async (register, role) => {
     });
 
     if (res.ok) {
+      toast.dismiss(toastId);
       toast.success(
         role === "admin"
           ? "Registration Done!"
@@ -99,14 +101,17 @@ export const registerRole = async (register, role) => {
       const responseData = await res.json();
       return responseData.token;
     } else {
+      toast.dismiss(toastId);
       await handleErrors(res);
     }
   } catch (error) {
+    toast.dismiss(toastId);
     console.error(error);
   }
 };
 
 export const loginRole = async (login, role) => {
+  const toastId = toast.loading("Signing in...");
   try {
     const res = await fetch(`${API_BASE_URL}/login/${role}/`, {
       method: "POST",
@@ -119,6 +124,7 @@ export const loginRole = async (login, role) => {
 
     if (res.ok) {
       storeRole(role);
+      toast.dismiss(toastId);
       toast.success("Login Success!");
       const responseData = await res.json();
       storeTokens({
@@ -127,9 +133,12 @@ export const loginRole = async (login, role) => {
       });
       return responseData.token;
     } else {
+      toast.dismiss(toastId);
       await handleErrors(res);
     }
   } catch (error) {
+    toast.dismiss(toastId);
+
     console.error(error);
   }
 };
@@ -178,7 +187,9 @@ export const resetPasswordAdmin = async (newPasswords) => {
   const toastId = toast.loading("Loading...");
   try {
     const res = await fetch(
-      `${API_BASE_URL}/reset-password-admin/${localStorage.getItem("forgetToken")}/`,
+      `${API_BASE_URL}/reset-password-admin/${localStorage.getItem(
+        "forgetToken"
+      )}/`,
       {
         method: "POST",
         headers: {

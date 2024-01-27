@@ -9,6 +9,7 @@ import ApprovalManagement from "./ApprovalManagement";
 import { getAdminDashboardMetrics } from "../../services/get-service";
 
 const AdminDashboard = () => {
+  const [loading, setLoading] = useState(true);
   const [studentManagement, setStudentManagement] = useState(true);
   const [attendanceManagement, setAttendanceManagement] = useState(false);
   const [approvalManagement, setApprovalManagement] = useState(false);
@@ -19,7 +20,6 @@ const AdminDashboard = () => {
     presentStudents: "",
     absentStudents: "",
   });
-
 
   const handleStudentSection = () => {
     setApprovalManagement(false);
@@ -61,6 +61,7 @@ const AdminDashboard = () => {
         presentStudents: data.present_students,
         absentStudents: data.absent_students,
       });
+      setLoading(false);
     } catch (error) {
       console.error("API request failed:", error);
     }
@@ -80,14 +81,17 @@ const AdminDashboard = () => {
         <div className="w-full md:w-[calc(100%-250px)] lg:w-[calc(100%-400px)] flex flex-col gap-4 lg:gap-10 justify-between">
           <div className="flex items-center justify-between">
             <MetricCard
+              loading={loading}
               title="Total Students"
               value={dashboardMetrics.totalStudents}
             />
             <MetricCard
+              loading={loading}
               title="Total Present"
               value={dashboardMetrics.presentStudents}
             />
             <MetricCard
+              loading={loading}
               title="Total Absent"
               value={dashboardMetrics.absentStudents}
             />

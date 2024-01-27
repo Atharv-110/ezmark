@@ -13,6 +13,7 @@ import { getManageStudents } from "../../services/get-service";
 
 
 const StudentManagement = () => {
+  const [loading, setLoading] = useState(true);
   const [users, setUsers]  = useState([]);
   const [search, setSearch] = useState("");
   const [page, setPage] = useState(1);
@@ -30,6 +31,7 @@ const StudentManagement = () => {
   const fetchTableData = async () => {
     const tableData = await getManageStudents();
     setUsers(tableData)
+    setLoading(false)
   }
 
   const fetchSearchData = async (e) => {
@@ -99,7 +101,7 @@ const StudentManagement = () => {
           <TableColumn key="email">Email</TableColumn>
           <TableColumn key="mobile_number">Mobile Number</TableColumn>
         </TableHeader>
-        <TableBody emptyContent={"No Student Data Found!"} items={items}>
+        <TableBody emptyContent={loading ? "Loading..." : "No Student Data Found!"} items={items}>
           {(item) => (
             <TableRow key={item.roll_number}>
               {(columnKey) => (
