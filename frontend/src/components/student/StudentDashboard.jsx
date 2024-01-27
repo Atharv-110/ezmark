@@ -24,7 +24,7 @@ const StudentDashboard = () => {
 
   useEffect(() => {
     fetchDashboardMetrics();
-  }, [scanQR]);
+  }, [scanQR, generateQR]);
 
   const fetchDashboardMetrics = async () => {
     try {
