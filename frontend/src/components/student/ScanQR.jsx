@@ -2,6 +2,10 @@ import { useState, useEffect } from "react";
 import QrReader from "react-qr-scanner";
 import { setScanQRAPI } from "../../services/get-service";
 
+const constraints = {
+  facingMode: { exact: "environment" },
+};
+
 const ScanQRPage = ({ setScanQR }) => {
   const [latitude, setLatitude] = useState("");
   const [longitude, setLongitude] = useState("");
@@ -64,7 +68,10 @@ const ScanQRPage = ({ setScanQR }) => {
             <QrReader
               delay={100}
               style={previewStyle}
-              facingMode="rear"
+              constraints={{
+                audio: false,
+                video: { facingMode: "environment" }
+              }}
               onError={handleError}
               onScan={handleScan}
             />
