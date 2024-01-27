@@ -31,6 +31,7 @@ const ApprovalManagement = () => {
     const tableData = await getPendingApprovals();
     console.log(tableData.length);
     setUsers(tableData);
+    setLoading(false);
   };
 
   console.log(response);
