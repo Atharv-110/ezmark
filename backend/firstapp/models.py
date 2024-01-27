@@ -13,7 +13,7 @@ class UserManager(BaseUserManager):
         """
         if not email:
             raise ValueError('User must have an email address')
-
+        
         user = self.model(
             email=self.normalize_email(email),
             name=name,
@@ -79,7 +79,6 @@ class PendingRequest(User):
     status = models.CharField(max_length=7, choices=STATUS_CHOICES, default="decline")
     
 class Admin(User):
-    # is_admin = is_admin = models.BooleanField(default=True)
     admin_id = models.AutoField(primary_key=True)
 
 class Student(User):

@@ -1,5 +1,23 @@
 from django.urls import path
-from .views import *
+from .views import (
+    StudentRegistrationView,
+    adminRegistrationView,
+    StudentloginView,
+    AdminloginView,   
+    PendingRequestView,
+    PendingRequestManagementSectionView,
+    StudentSendPasswordResetEmailView,
+    StudentPasswordResetView,
+    AdminSendPasswordResetEmailView,
+    AdminPasswordResetView,
+    AdminDashboardMetricsView,
+    StudentManagementSectionView,
+    AttendenceManageMentSectionView,
+    StudentAfterLoginPanelView,
+    GenerateQRCodeView,
+    MarkAttendanceDynamicQRView,
+    GetAttendenceByDateView
+)
 from rest_framework_simplejwt.views import (
     TokenRefreshView,
 )
@@ -228,8 +246,10 @@ by bellow url
                                                                                ---not optional--
     End-point : http://127.0.0.1:8000/api/dashboard/admin/attendance-management/?date=2024-01-18   
     -> if u have to know today status then u have to send todays date 
+
+15)  
     
-15) This is fiftheen Api's where a u have to send where u have to send a get request
+16) This is Sixteen Api's where a u have to send where u have to send a get request
     with jwt token i will send u a token which specifically for that student u have to set
     token behind the qr u have to send the get req in every minute i will send u token
     
@@ -242,7 +262,7 @@ by bellow url
     
     end-points - http://127.0.0.1:8000/api/student/generate-qr-code/
 
-16) This is sixteen Apis where u have to send logitude latitude and data which is student will get
+17) This is Seventeen Apis where u have to send logitude latitude and data which is student will get
     from qr code. u have to send access token
     -> i will check three thing whether both id is same
     -> i will check the time limit 
@@ -272,10 +292,11 @@ by bellow url
     response look -like if attendence already marked = {
     "error": "Attendance already marked for today."
     }
+    
+18)  
 """
 
 urlpatterns = [
-    
     path('token/refresh/', TokenRefreshView.as_view(), name='token_refresh'), #1
     path('register/student/', StudentRegistrationView.as_view(), name = 'StudentRegister'), #2
     path('register/admin/', adminRegistrationView.as_view(), name = 'AdminRegister'),   #3
@@ -294,5 +315,4 @@ urlpatterns = [
     path('student/generate-qr-code/', GenerateQRCodeView.as_view(), name='generate-qr-code'),     #16
     path('student/MarkAttendanceDynamicQRView/',MarkAttendanceDynamicQRView.as_view(), name = "Mark-Attendance-Dynamic"),  #17
     path('student/get-attendence-by-date/',GetAttendenceByDateView.as_view(), name="get_attendence_by_date")  #18
-
 ]

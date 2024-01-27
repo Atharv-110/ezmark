@@ -1,0 +1,14 @@
+version: '3'
+
+services:
+  web:
+    build: .
+    command: bash -c "python3 manage.py makemigrations && python3 manage.py migrate"
+    image: abhishek142/attendence_web:latest
+    container_name: attendenceweb
+    volumes:
+      - .:/attendenceweb
+    env_file:
+      - .env
+    ports:
+      - "8000:8000"

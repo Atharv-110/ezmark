@@ -11,7 +11,7 @@ class CustomUserAdmin(UserAdmin):
     fieldsets = (
         (None, {'fields': ('email', 'password')}),
         ('Personal Info', {'fields': ('name', 'mobile_number')}),
-        ('Permissions', {'fields': ('is_admin', 'is_active')}),
+        ('Permissions', {'fields': ('is_admin', 'is_active','is_student')}),
         ('Important dates', {'fields': ('created_at', 'updated_at')}),
     )
 
@@ -23,7 +23,7 @@ class CustomUserAdmin(UserAdmin):
     )
 
     filter_horizontal = ()
-    list_filter = ('is_admin', 'is_active')
+    list_filter = ('is_admin', 'is_active', 'is_student')
     ordering = ('email',)
     
 

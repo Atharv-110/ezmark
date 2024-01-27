@@ -1,16 +1,7 @@
-# Util.py
 import smtplib
-from email.mime.text import MIMEText
-from email.mime.multipart import MIMEMultipart
 import os
 from dotenv import load_dotenv
 from geopy.distance import geodesic
-
-# import qrcode
-# from io import BytesIO
-# from PIL import Image
-
-# Load environment variables from .env
 load_dotenv()
 class Util:
     @staticmethod
@@ -43,31 +34,11 @@ Subject: %s
             print("Something went wrong….", ex)
             
 def is_within_geofence(latitude, longitude):
-    geofence_center = (22.71532363393987, 75.84359868812682)
-    
+    geofenceLatitude = os.environ.get('LATITUDE')
+    geofenceLongitude = os.environ.get('LONGITUDE')
+    geofence_center = (geofenceLatitude, geofenceLongitude)
     # 22.6042641, 75.6855095
-    # 22.71532363393987, 75.84359868812682
     geofence_radius = 1000
     distance = geodesic((latitude, longitude), geofence_center).meters
     print(distance, geofence_radius)
     return distance <= geofence_radius
-
-
-# def generate_dynamic_qr_code(data):
-#     qr = qrcode.QRCode(
-#         version=1,
-#         error_correction=qrcode.constants.ERROR_CORRECT_L,
-#         box_size=10,
-#         border=4,
-#     )
-#     qr.add_data(data)
-#     qr.make(fit=True)
-
-#     img = qr.make_image(fill_color="black", back_color="white")
-
-#     # Convert the PIL Image to bytes
-#     buffer = BytesIO()
-#     img.save(buffer)
-#     qr_code_image = buffer.getvalue()
-
-#     return qr_code_image
