@@ -50,7 +50,7 @@ const StudentLogin = () => {
   }
 
   return (
-    <section className="flex-center py-20">
+    <section className="h-screen flex-center">
       <LoginForm
         type={type}
         setType={setType}

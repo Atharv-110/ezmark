@@ -34,7 +34,7 @@ const ResetPasswordPage = () => {
 
   return (
     <section className="h-screen flex-center">
-      <div className="w-full md:w-[600px] mx-auto bg-white -4 md:p-8 rounded-lg shadow-lg text-primary-black font-medium">
+      <div className="w-full md:w-[500px] mx-auto bg-white md:p-8 rounded-lg shadow-lg text-primary-black font-medium">
         <h1 className="text-xl capitalize font-medium text-center mb-4">
           Change Password
         </h1>
