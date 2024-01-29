@@ -45,6 +45,8 @@ const AttendanceRecord = () => {
   };
 
   useEffect(() => {
+    setLoading(true);
+    setAttendanceData([]);
     fetchTableData();
   }, [calDate]);
 
