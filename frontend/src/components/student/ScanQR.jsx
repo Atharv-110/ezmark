@@ -2,10 +2,6 @@ import { useState, useEffect } from "react";
 import QrReader from "react-qr-scanner";
 import { setScanQRAPI } from "../../services/get-service";
 
-const constraints = {
-  facingMode: { exact: "environment" },
-};
-
 const ScanQRPage = ({ setScanQR }) => {
   const [latitude, setLatitude] = useState("");
   const [longitude, setLongitude] = useState("");
