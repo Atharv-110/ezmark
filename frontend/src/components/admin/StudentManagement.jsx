@@ -11,10 +11,9 @@ import {
 } from "@nextui-org/react";
 import { getManageStudents } from "../../services/get-service";
 
-
 const StudentManagement = () => {
   const [loading, setLoading] = useState(true);
-  const [users, setUsers]  = useState([]);
+  const [users, setUsers] = useState([]);
   const [search, setSearch] = useState("");
   const [page, setPage] = useState(1);
   const rowsPerPage = 10;
@@ -30,23 +29,28 @@ const StudentManagement = () => {
 
   const fetchTableData = async () => {
     const tableData = await getManageStudents();
-    setUsers(tableData)
-    setLoading(false)
-  }
+    setUsers(tableData);
+    setLoading(false);
+  };
 
   const fetchSearchData = async (e) => {
     e.preventDefault();
+    setLoading(true);
+    setUsers([]);
     const data = await getManageStudents(search);
     setUsers(data);
-  }
+  };
 
   useEffect(() => {
-    fetchTableData()
-  }, [])
+    fetchTableData();
+  }, []);
 
   return (
     <div className="w-full flex-center flex-col gap-10">
-      <form onSubmit={fetchSearchData} className="w-full flex items-stretch justify-center">
+      <form
+        onSubmit={fetchSearchData}
+        className="w-full flex items-stretch justify-center"
+      >
         <input
           type="text"
           placeholder="Search by name, roll number or mobile number"
@@ -101,7 +105,10 @@ const StudentManagement = () => {
           <TableColumn key="email">Email</TableColumn>
           <TableColumn key="mobile_number">Mobile Number</TableColumn>
         </TableHeader>
-        <TableBody emptyContent={loading ? "Loading..." : "No Student Data Found!"} items={items}>
+        <TableBody
+          emptyContent={loading ? "Searching..." : "No Student Data Found!"}
+          items={items}
+        >
           {(item) => (
             <TableRow key={item.roll_number}>
               {(columnKey) => (

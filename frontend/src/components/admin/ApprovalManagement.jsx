@@ -23,6 +23,8 @@ const ApprovalManagement = () => {
   const [users, setUsers] = useState([]);
   const [selectRow, setSelectRow] = useState([]);
   const [page, setPage] = useState(1);
+  const [disable, setDisable] = useState(false);
+  const [delDisable, setDelDisable] = useState(false);
   const rowsPerPage = 10;
 
   const pages = Math.ceil(users.length / rowsPerPage);
@@ -34,22 +36,24 @@ const ApprovalManagement = () => {
     setLoading(false);
   };
 
-  console.log(response);
-
   const approveRequest = async () => {
     if (selectRow.length != 0 && selectRow.size != 0) {
+      setDisable(true);
       setResponse(await setPendingApprovals(selectRow.currentKey, "POST"));
     } else {
       toast.error("Select a row in Table");
     }
+    setDisable(false);
   };
 
   const deleteRequest = async () => {
     if (selectRow.length != 0 && selectRow.size != 0) {
+      setDelDisable(true);
       setResponse(await setPendingApprovals(selectRow.currentKey, "DELETE"));
     } else {
       toast.error("Select a row in Table");
     }
+    setDelDisable(false)
   };
 
   const items = useMemo(() => {
@@ -61,6 +65,8 @@ const ApprovalManagement = () => {
 
   useEffect(() => {
     fetchTableData();
+    setDisable(false);
+    setDelDisable(false);
   }, [response]);
 
   return (
@@ -98,7 +104,10 @@ const ApprovalManagement = () => {
             <TableColumn key="email">EMAIL</TableColumn>
             <TableColumn key="mobile_number">MOBILE NO.</TableColumn>
           </TableHeader>
-          <TableBody emptyContent={loading ? "Loading..." : "No Pending Requests Found"} items={items}>
+          <TableBody
+            emptyContent={loading ? "Loading..." : "No Pending Requests Found"}
+            items={items}
+          >
             {(item) => (
               <TableRow key={item.email}>
                 {(columnKey) => (
@@ -112,16 +121,18 @@ const ApprovalManagement = () => {
       <div className="w-full bg-white rounded-md shadow-md flex-center md:flex-col p-4 gap-3 md:w-[200px] lg:w-[250px]">
         <h1 className="hidden md:block text-lg font-semibold">Action Centre</h1>
         <button
+          disabled={disable || delDisable}
           onClick={approveRequest}
           className="md:w-full bg-green-400 px-5 py-2 rounded-md text-white font-medium border-2 border-transparent hover:border-green-400 hover:bg-transparent hover:text-green-400"
         >
-          Approve Request
+          {disable ? "Approving..." : "Approve"}
         </button>
         <button
+          disabled={delDisable || disable}
           onClick={deleteRequest}
           className="md:w-full bg-transparent text-red-400 border-2 border-red-400 px-5 py-2 rounded-md font-medium hover:bg-red-400 hover:text-white transition-effect"
         >
-          Delete Request
+          {delDisable ? "Deleting..." : "Delete"}
         </button>
       </div>
     </div>

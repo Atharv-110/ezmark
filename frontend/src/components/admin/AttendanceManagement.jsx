@@ -43,6 +43,8 @@ const AttendanceManagement = () => {
   console.log(calDate);
 
   useEffect(() => {
+    setLoading(true)
+    setUsers([]);
     fetchTableData();
   }, [calDate]);
 
@@ -80,7 +82,7 @@ const AttendanceManagement = () => {
             <TableColumn key="status">STATUS</TableColumn>
           </TableHeader>
           <TableBody
-            emptyContent={loading ? "Loading..." : "No Attendance Data Found!"}
+            emptyContent={loading ? "Searching..." : "No Attendance Data Found!"}
             items={items}
           >
             {(item) => (
