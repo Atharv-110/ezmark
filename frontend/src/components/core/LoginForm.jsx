@@ -14,6 +14,7 @@ const LoginForm = ({
   forgetEmail,
   setForgetEmail,
   handleForgetPassword,
+  disable
 }) => {
   const [forgot, setForgot] = useState(false);
   const navigate = useNavigate();
@@ -98,8 +99,8 @@ const LoginForm = ({
               Forgot Password?
             </button>
 
-            <button type="submit" className="btn mt-2 bg-primary-black">
-              Login
+            <button disabled={disable} type="submit" className="btn mt-2 bg-primary-black">
+              {disable ? "Logging in..." : "Login"}
             </button>
             <div className="flex-center gap-1">
               <h1>Don&apos;t have an account ?</h1>
@@ -190,8 +191,8 @@ const LoginForm = ({
                 />
               </label>
             </div>
-            <button type="submit" className="btn bg-primary-black">
-              Register
+            <button disabled={disable} type="submit" className="btn bg-primary-black">
+              {disable ? "Registering..." : "Register"}
             </button>
             <div className="flex-center gap-1">
               <h1>Already have an account ? </h1>
