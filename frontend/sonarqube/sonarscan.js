@@ -4,7 +4,7 @@ import process from 'process';
 scanner(
     {
         serverUrl: 'http://localhost:9000',
-        login: "sqp_ce8ae07f43f1eba00316deca18ddb47ad59e658b",
+        login: "sqp_942b01782ddc3327fc5463abd078a705226b7b22",
         options: {
             'sonar.projectName': 'ezmark-frontend',
             'sonar.projectDescription': 'ezmark is an managemenet system that manages attendance and the students',
