@@ -94,4 +94,9 @@ class Attendance(models.Model):
     ]
     status = models.CharField(max_length=7, choices=STATUS_CHOICES, default="Absent")
     created_at = models.DateTimeField(auto_now_add=True)
-    
+
+class GPS(models.Model):
+    latitude = models.CharField(max_length = 20, default = "22.7155422")
+    longitude = models.CharField(max_length = 20, default = "75.8435895")
+    area = models.IntegerField(default = 1000)
+    secretToken = models.CharField(max_length = 30, default = "abhishek123")

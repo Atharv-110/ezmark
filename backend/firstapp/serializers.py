@@ -1,5 +1,5 @@
 from rest_framework import serializers
-from .models import Admin, Student, Attendance, User, PendingRequest
+from .models import Admin, Student, Attendance, User, PendingRequest, GPS
 from django.utils.encoding import smart_str, force_bytes, DjangoUnicodeDecodeError
 from django.utils.http import urlsafe_base64_decode, urlsafe_base64_encode
 from django.contrib.auth.tokens import PasswordResetTokenGenerator
@@ -7,25 +7,23 @@ from .utils import Util
 
 msg = "Token is not Valid or Expired"
 
-class StudentRegistrationSerializer(serializers.ModelSerializer):
+class StudentRegistrationSerializer(serializers.ModelSerializer ):
     password2 = serializers.CharField(style={"input_type": "password"}, write_only=True)
-
     class Meta:
         model = PendingRequest
         fields = ["email", "name", "mobile_number", "password", "password2"]
         extra_kwargs = {"password": {"write_only": True}}
-
+        
     def validate(self, attrs):
         password = attrs.get("password")
         password2 = attrs.get("password2")
         if password != password2:
             raise serializers.ValidationError(
-                "Password and Confirm Password don't match"
-            )
+                "Password and Confirm Password don't match" )
         return attrs
-
     def create(self, validated_data):
-        validated_data.pop("password2", None)
+        validated_data.pop("password2", None) 
+        
         return PendingRequest.objects.create_user(**validated_data)
 
 
@@ -278,3 +276,24 @@ class StudentAttendenceByDateSerializer(serializers.Serializer):
             "requested_date": instance["requested_date"],
             "attendance_status": instance["attendance_status"],
         }
+
+class UpdateGeofenceSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = GPS
+        fields = ['latitude', 'longitude', 'area', 'secretToken']
+    def validate(self, attrs):
+        
+        insatncegps = GPS.objects.first()
+        if(attrs.get("secretToken") != insatncegps.secretToken):
+            raise serializers.ValidationError(
+                "Secret token not matching"
+            )
+        return attrs
+
+    def update(self, instance, validated_data):
+        instance.latitude = validated_data.get('latitude', instance.latitude)
+        instance.longitude = validated_data.get('longitude', instance.longitude)
+        instance.area = validated_data.get('area', instance.area)
+        instance.secretToken = validated_data.get('secretToken', instance.secretToken)
+        instance.save()
+        return instance

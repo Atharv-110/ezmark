@@ -20,6 +20,7 @@ from .serializers import (
     AttendanceManagementSectionSerializer,
     StudentAfterLoginPanelSerializer,
     StudentAttendenceByDateSerializer,
+    UpdateGeofenceSerializer,
 )
 from django.shortcuts import get_object_or_404
 from django.contrib.auth import authenticate
@@ -28,20 +29,21 @@ from rest_framework.permissions import IsAuthenticated
 from rest_framework_simplejwt.tokens import RefreshToken
 from datetime import date, datetime, timedelta
 from .utils import is_within_geofence
-from .models import Student, Attendance, PendingRequest, Admin
+from .models import Student, Attendance, PendingRequest, Admin, GPS
 
 
-# Generate token manually for student
-def get_tokens_for_student(student):
+
+# Generate token manually for student get_tokens_for_student
+def gettokensforstudent(student):
     refresh = RefreshToken.for_user(student)
     return {
         "refresh": str(refresh),
         "access": str(refresh.access_token),
     }
-
+    
 
 # Generate token manully for admin
-def get_tokens_for_Admin(admin):
+def gettokensforadmin(admin):
     refresh = RefreshToken.for_user(admin)
     return {
         "refresh": str(refresh),
@@ -53,12 +55,13 @@ def get_tokens_for_Admin(admin):
 class StudentRegistrationView(APIView):
     # It will Generalize The way of giving error
     renderer_classes = [UserRenderer]
-
+    # print(" render_classes : ",renderer_classes)
     def post(self, request, format=None):
         serializer = StudentRegistrationSerializer(data=request.data)
         serializer.is_valid(raise_exception=True)
         pending_request = serializer.save(is_active=False)
-        token = get_tokens_for_student(pending_request)
+        print("pending_request :",pending_request) 
+        token = gettokensforstudent(pending_request)
         return Response(
             {"token": token, "msg": "Registration Successful"},
             status=status.HTTP_201_CREATED,
@@ -76,14 +79,14 @@ class PendingRequestView(APIView):
 
             # Move the pending request to the Student model
             pending_request = PendingRequest.objects.get(email=email)
-            actEmail = pending_request.email
-            actName = pending_request.name
+            actemail = pending_request.email
+            actname = pending_request.name
             actmobile_numbe = pending_request.mobile_number
             actpassword = pending_request.password
             pending_request.delete()
             Student.objects.create(
-                email=actEmail,
-                name=actName,
+                email=actemail,
+                name=actname,
                 mobile_number=actmobile_numbe,
                 password=actpassword,
             )
@@ -134,7 +137,7 @@ class StudentloginView(APIView):
                 {"error": "Not Found Details"}, status=status.HTTP_404_NOT_FOUND
             )
         if student is not None:
-            token = get_tokens_for_student(student)
+            token = gettokensforstudent(student)
             return Response(
                 {"token": token, "msg": "Login Success"}, status=status.HTTP_200_OK
             )
@@ -165,7 +168,7 @@ class AdminloginView(APIView):
                 {"error": "Not Found Details"}, status=status.HTTP_404_NOT_FOUND
             )
         if admin is not None:
-            token = get_tokens_for_Admin(admin)
+            token = gettokensforadmin(admin)
             return Response(
                 {"token": token, "msg": "Login Success"}, status=status.HTTP_200_OK
             )
@@ -176,14 +179,14 @@ class AdminloginView(APIView):
             )
 
 
-class adminRegistrationView(APIView):
+class AdminRegistrationView(APIView):
     renderer_classes = [UserRenderer]
 
     def post(self, request, format=None):
         serializer = AdminRegistrationSerializer(data=request.data)
         serializer.is_valid(raise_exception=True)
         admin = serializer.save(is_student=False)
-        token = get_tokens_for_Admin(admin)
+        token = gettokensforadmin(admin)
         return Response(
             {"token": token, "msg": "Registartion Successful"},
             status=status.HTTP_201_CREATED,
@@ -322,7 +325,7 @@ class StudentManagementSectionView(ListAPIView):
 
 # Attendence section management view
 
-
+cdformat = "%Y-%m-%d"
 class AttendenceManageMentSectionView(ListCreateAPIView):
     permission_classes = [IsAuthenticated]
     serializer_class = AttendanceManagementSectionSerializer
@@ -333,7 +336,7 @@ class AttendenceManageMentSectionView(ListCreateAPIView):
     def list(self, request, *args, **kwargs):
         try:
             selected_date = self.request.query_params.get(
-                "date", datetime.today().strftime("%Y-%m-%d")
+                "date", datetime.today().strftime(cdformat)
             )
             student_queryset = Student.objects.all()
             queryset = []
@@ -354,11 +357,11 @@ class AttendenceManageMentSectionView(ListCreateAPIView):
                         }
                     )
                 elif (
-                    datetime.strptime(selected_date, "%Y-%m-%d").date()
+                    datetime.strptime(selected_date, cdformat).date()
                     > datetime.now().date()
-                    or datetime.strptime(selected_date, "%Y-%m-%d").date()
+                    or datetime.strptime(selected_date, cdformat).date()
                     < datetime.strptime(
-                        str(student_obj.created_at)[0:10], "%Y-%m-%d"
+                        str(student_obj.created_at)[0:10], cdformat
                     ).date()
                 ):
                     queryset.append(
@@ -401,34 +404,33 @@ class StudentAfterLoginPanelView(APIView):
 
         present_days = Attendance.objects.filter(student=student_user, status='Present').count()
         absent_days = 0
-        # student_user = request.user
         obj = Student.objects.filter(email = request.user).first()
         starting_date = obj.created_at
         original_datetime = datetime.strptime(str(starting_date), '%Y-%m-%d %H:%M:%S.%f%z')
         start_date = original_datetime.date()
         end_date = datetime.now().date()
-        PresentdateList = []
+        presentdatelist = []
         for i in Attendance.objects.filter(student=student_user, status='Present'):
-          PresentdateList.append(i.date)        
+          presentdatelist.append(i.date)        
         range_date_list = [start_date + timedelta(days=x) for x in range((end_date - start_date).days + 1)]
-        attendenceRecord = {}
+        attendencerecord = {}
         for i in range_date_list:
-          if i in PresentdateList:
-            attendenceRecord[str(i)] = "Present"
+          if i in presentdatelist:
+            attendencerecord[str(i)] = "Present"
           else:
-            attendenceRecord[str(i)] = "Absent" 
+            attendencerecord[str(i)] = "Absent" 
             absent_days += 1
-        Total_days = present_days + absent_days
+        totaldays = present_days + absent_days
         
         student_user = request.user
         metrics_data = {
             'Roll_Number' : obj.roll_number,
             'student_name': obj.name,  
             'student_email': student_user.email,
-            'total_days': Total_days, 
+            'total_days': totaldays, 
             'present_days': present_days,
             'absent_days':  absent_days,
-            'attendenceRecord':attendenceRecord,
+            'attendenceRecord':attendencerecord,
         }
 
         serializer = StudentAfterLoginPanelSerializer(metrics_data)
@@ -472,7 +474,7 @@ class GetAttendenceByDateView(APIView):
                     {"error": "Date parameter is required"},
                     status=status.HTTP_400_BAD_REQUEST,
                 )
-            requested_date = datetime.strptime(requested_date_str, "%Y-%m-%d").date()
+            requested_date = datetime.strptime(requested_date_str, cdformat).date()
             attendance_status = Attendance.objects.filter(
                 student=student_user, date=requested_date
             ).first()
@@ -480,13 +482,13 @@ class GetAttendenceByDateView(APIView):
                 status_text = attendance_status.status
             else:
                 student_instance = get_object_or_404(Student, email=str(request.user))
-                idCreateDate = student_instance.created_at
-                ak = str(idCreateDate)
-                idCreateDate = ak[0:10]
-                idCreateDate = datetime.strptime(idCreateDate, "%Y-%m-%d").date()
+                idcreatedate = student_instance.created_at
+                ak = str(idcreatedate)
+                idcreatedate = ak[0:10]
+                idcreatedate = datetime.strptime(idcreatedate, cdformat).date()
                 if (
                     requested_date > datetime.now().date()
-                    or requested_date < idCreateDate
+                    or requested_date < idcreatedate
                 ):
                     status_text = "Not available"
                 else:
@@ -543,3 +545,18 @@ class MarkAttendanceDynamicQRView(APIView):
             )
         Attendance.objects.create(student=student, date=date, status="Present")
         return Response({"msg": "Attendance marked successfully."}, status=200)
+
+class UpdateGeofenceView(APIView):
+    def put(self, request, *args, **kwargs):
+        try:
+            instance = GPS.objects.first()
+        except GPS.DoesNotExist:
+            return Response({"error": "GPS instance not found"}, status=status.HTTP_404_NOT_FOUND)
+
+        serializer = UpdateGeofenceSerializer(instance, data=request.data)
+        
+        # Validate and save the serializer
+        if serializer.is_valid():
+            serializer.save()
+            return Response({"msg":"success"}, status=status.HTTP_200_OK)
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)

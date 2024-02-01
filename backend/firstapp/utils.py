@@ -1,7 +1,8 @@
 import smtplib
 import os
 from dotenv import load_dotenv
-from geopy.distance import geodesic
+from geopy import distance
+from .models import GPS
 load_dotenv()
 class Util:
     @staticmethod
@@ -32,13 +33,12 @@ Subject: %s
           print("Email sent successfully!")
         except Exception as ex:
             print("Something went wrong….", ex)
-            
+
 def is_within_geofence(latitude, longitude):
-    geofenceLatitude = os.environ.get('LATITUDE')
-    geofenceLongitude = os.environ.get('LONGITUDE')
-    geofence_center = (geofenceLatitude, geofenceLongitude)
-    # 22.6042641, 75.6855095
-    geofence_radius = 1000
-    distance = geodesic((latitude, longitude), geofence_center).meters
-    print(distance, geofence_radius)
-    return distance <= geofence_radius
+  gpsinstance = GPS.objects.first()
+  geofencelatitude = float(gpsinstance.latitude)
+  geofencelongitude = float(gpsinstance.longitude)
+  geofence_radius = float(gpsinstance.area)
+  dis = distance.distance((geofencelatitude, geofencelongitude),(latitude, longitude)).meters
+  return dis <= geofence_radius
+  

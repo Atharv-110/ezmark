@@ -1,7 +1,7 @@
 from django.urls import path
 from .views import (
     StudentRegistrationView,
-    adminRegistrationView,
+    AdminRegistrationView,
     StudentloginView,
     AdminloginView,   
     PendingRequestView,
@@ -16,7 +16,8 @@ from .views import (
     StudentAfterLoginPanelView,
     GenerateQRCodeView,
     MarkAttendanceDynamicQRView,
-    GetAttendenceByDateView
+    GetAttendenceByDateView,
+    UpdateGeofenceView
 )
 from rest_framework_simplejwt.views import (
     TokenRefreshView,
@@ -299,7 +300,7 @@ by bellow url
 urlpatterns = [
     path('token/refresh/', TokenRefreshView.as_view(), name='token_refresh'), #1
     path('register/student/', StudentRegistrationView.as_view(), name = 'StudentRegister'), #2
-    path('register/admin/', adminRegistrationView.as_view(), name = 'AdminRegister'),   #3
+    path('register/admin/', AdminRegistrationView.as_view(), name = 'AdminRegister'),   #3
     path('login/student/',StudentloginView.as_view(), name = "Studentlogin"),      #4
     path('login/admin/',AdminloginView.as_view(), name = "Adminlogin"),      #5
     path('student/pending-requests/', PendingRequestView.as_view(), name='pending-requests'),  #6
@@ -314,5 +315,6 @@ urlpatterns = [
     path('student/dashboard/', StudentAfterLoginPanelView.as_view(), name = "student-login-view"),    #15
     path('student/generate-qr-code/', GenerateQRCodeView.as_view(), name='generate-qr-code'),     #16
     path('student/MarkAttendanceDynamicQRView/',MarkAttendanceDynamicQRView.as_view(), name = "Mark-Attendance-Dynamic"),  #17
-    path('student/get-attendence-by-date/',GetAttendenceByDateView.as_view(), name="get_attendence_by_date")  #18
+    path('student/get-attendence-by-date/',GetAttendenceByDateView.as_view(), name="get_attendence_by_date"),  #18
+    path('update/geofence/',UpdateGeofenceView.as_view(), name = "update_geofence")  #19
 ]
