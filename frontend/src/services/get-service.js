@@ -13,14 +13,14 @@ export const getAdminDashboardMetrics = async () => {
   const accessToken = getAccessToken();
 
   if (!accessToken) {
-    return Promise.reject("No access token available");
+    return Promise.reject(new Error("No access token available"));
   }
 
   if (!isAccessTokenValid()) {
     const refreshedAccessToken = await refreshTokens();
 
     if (!refreshedAccessToken) {
-      return Promise.reject("Token refresh failed");
+      return Promise.reject(new Error("Token refresh failed"));
     }
   }
 
@@ -48,14 +48,14 @@ export const getManageStudents = async (search) => {
   const accessToken = getAccessToken();
 
   if (!accessToken) {
-    return Promise.reject("No access token available");
+    return Promise.reject(new Error("No access token available"));
   }
 
   if (!isAccessTokenValid()) {
     const refreshedAccessToken = await refreshTokens();
 
     if (!refreshedAccessToken) {
-      return Promise.reject("Token refresh failed");
+      return Promise.reject(new Error("Token refresh failed"));
     }
   }
 
@@ -93,7 +93,7 @@ export const getManageAttendance = async (date) => {
   const accessToken = getAccessToken();
 
   if (!accessToken) {
-    return Promise.reject("No access token available");
+    return Promise.reject(new Error("No access token available"));
   }
 
   if (!isAccessTokenValid()) {
@@ -101,7 +101,7 @@ export const getManageAttendance = async (date) => {
     const refreshedAccessToken = await refreshTokens();
 
     if (!refreshedAccessToken) {
-      return Promise.reject("Token refresh failed");
+      return Promise.reject(new Error("Token refresh failed"));
     }
   }
 
@@ -137,7 +137,7 @@ export const getPendingApprovals = async () => {
   const accessToken = getAccessToken();
 
   if (!accessToken) {
-    return Promise.reject("No access token available");
+    return Promise.reject(new Error("No access token available"));
   }
 
   if (!isAccessTokenValid()) {
@@ -145,7 +145,7 @@ export const getPendingApprovals = async () => {
     const refreshedAccessToken = await refreshTokens();
 
     if (!refreshedAccessToken) {
-      return Promise.reject("Token refresh failed");
+      return Promise.reject(new Error("Token refresh failed"));
     }
   }
 
@@ -178,14 +178,14 @@ export const setPendingApprovals = async (email, type) => {
   const accessToken = getAccessToken();
 
   if (!accessToken) {
-    return Promise.reject("No access token available");
+    return Promise.reject(new Error("No access token available"));
   }
 
   if (!isAccessTokenValid()) {
     const refreshedAccessToken = await refreshTokens();
 
     if (!refreshedAccessToken) {
-      return Promise.reject("Token refresh failed");
+      return Promise.reject(new Error("Token refresh failed"));
     }
   }
 
@@ -222,14 +222,14 @@ export const getStudentDashboardMetrics = async () => {
   const accessToken = getAccessToken();
 
   if (!accessToken) {
-    return Promise.reject("No access token available");
+    return Promise.reject(new Error("No access token available"));
   }
 
   if (!isAccessTokenValid()) {
     const refreshedAccessToken = await refreshTokens();
 
     if (!refreshedAccessToken) {
-      return Promise.reject("Token refresh failed");
+      return Promise.reject(new Error("Token refresh failed"));
     }
   }
 
@@ -256,14 +256,14 @@ export const getGenerateQR = async () => {
   const accessToken = getAccessToken();
 
   if (!accessToken) {
-    return Promise.reject("No access token available");
+    return Promise.reject(new Error("No access token available"));
   }
 
   if (!isAccessTokenValid()) {
     const refreshedAccessToken = await refreshTokens();
 
     if (!refreshedAccessToken) {
-      return Promise.reject("Token refresh failed");
+      return Promise.reject(new Error("Token refresh failed"));
     }
   }
 
@@ -292,14 +292,14 @@ export const setScanQRAPI = async (data) => {
   console.log(JSON.stringify(data));
 
   if (!accessToken) {
-    return Promise.reject("No access token available");
+    return Promise.reject(new Error("No access token available"));
   }
 
   if (!isAccessTokenValid()) {
     const refreshedAccessToken = await refreshTokens();
 
     if (!refreshedAccessToken) {
-      return Promise.reject("Token refresh failed");
+      return Promise.reject(new Error("Token refresh failed"));
     }
   }
 
@@ -329,14 +329,14 @@ export const getAttendanceStudent = async (date) => {
   const accessToken = getAccessToken();
 
   if (!accessToken) {
-    return Promise.reject("No access token available");
+    return Promise.reject(new Error("No access token available"));
   }
 
   if (!isAccessTokenValid()) {
     const refreshedAccessToken = await refreshTokens();
 
     if (!refreshedAccessToken) {
-      return Promise.reject("Token refresh failed");
+      return Promise.reject(new Error("Token refresh failed"));
     }
   }
 

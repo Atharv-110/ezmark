@@ -20,8 +20,6 @@ const StudentDashboard = () => {
     absentDays: "",
   });
 
-  console.log(dashboardMetrics.absentDays);
-
   useEffect(() => {
     fetchDashboardMetrics();
   }, [scanQR, generateQR]);
