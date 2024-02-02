@@ -1,4 +1,5 @@
 import { useState } from "react";
+import PropTypes from "prop-types";
 import { useNavigate } from "react-router-dom";
 
 const LoginForm = ({
@@ -14,14 +15,17 @@ const LoginForm = ({
   forgetEmail,
   setForgetEmail,
   handleForgetPassword,
-  disable
+  disable,
 }) => {
   const [forgot, setForgot] = useState(false);
   const navigate = useNavigate();
   return (
     <div className="w-full max-sm:mx-[2%] md:w-[600px] mx-auto bg-white p-4 md:p-8 rounded-lg shadow-lg text-primary-black font-medium">
       <div>
-        <button onClick={() => navigate(-1)} className="px-2 py-1 rounded-full border-2 text-gray-light border-gray-light hover:border-primary-black hover:text-primary-black transition-effect">
+        <button
+          onClick={() => navigate(-1)}
+          className="px-2 py-1 rounded-full border-2 text-gray-light border-gray-light hover:border-primary-black hover:text-primary-black transition-effect"
+        >
           <i className="fa-solid fa-arrow-left-long"></i>
         </button>
       </div>
@@ -99,7 +103,11 @@ const LoginForm = ({
               Forgot Password?
             </button>
 
-            <button disabled={disable} type="submit" className="btn mt-2 bg-primary-black">
+            <button
+              disabled={disable}
+              type="submit"
+              className="btn mt-2 bg-primary-black"
+            >
               {disable ? "Logging in..." : "Login"}
             </button>
             <div className="flex-center gap-1">
@@ -191,7 +199,11 @@ const LoginForm = ({
                 />
               </label>
             </div>
-            <button disabled={disable} type="submit" className="btn bg-primary-black">
+            <button
+              disabled={disable}
+              type="submit"
+              className="btn bg-primary-black"
+            >
               {disable ? "Registering..." : "Register"}
             </button>
             <div className="flex-center gap-1">
@@ -240,6 +252,22 @@ const LoginForm = ({
       )}
     </div>
   );
+};
+
+LoginForm.propTypes = {
+  type: PropTypes.string.isRequired,
+  setType: PropTypes.func.isRequired,
+  role: PropTypes.string.isRequired,
+  login: PropTypes.object.isRequired,
+  setLogin: PropTypes.func.isRequired,
+  handleLogin: PropTypes.func.isRequired,
+  register: PropTypes.object.isRequired,
+  setRegister: PropTypes.func.isRequired,
+  handleRegistration: PropTypes.func.isRequired,
+  forgetEmail: PropTypes.string.isRequired,
+  setForgetEmail: PropTypes.func.isRequired,
+  handleForgetPassword: PropTypes.func.isRequired,
+  disable: PropTypes.bool.isRequired,
 };
 
 export default LoginForm;
