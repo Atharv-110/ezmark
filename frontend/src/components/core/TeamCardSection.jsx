@@ -1,3 +1,4 @@
+import PropTypes from "prop-types";
 import { Link } from "react-router-dom";
 
 const teamDetails = [
@@ -79,6 +80,18 @@ const TeamCard = ({ name, profile, designation, socials }) => {
       </div>
     </div>
   );
+};
+
+TeamCard.propTypes = {
+  name: PropTypes.string.isRequired,
+  profile: PropTypes.string.isRequired,
+  designation: PropTypes.string.isRequired,
+  socials: PropTypes.shape({
+    portfolio: PropTypes.string,
+    github: PropTypes.string.isRequired,
+    linkedin: PropTypes.string.isRequired,
+    twitter: PropTypes.string,
+  }).isRequired,
 };
 
 const TeamCardSection = () => {

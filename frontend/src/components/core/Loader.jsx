@@ -1,3 +1,4 @@
+import PropTypes from 'prop-types';
 import { Spinner } from "@nextui-org/react";
 
 const Loader = ({ color }) => {
@@ -19,6 +20,10 @@ const Loader = ({ color }) => {
       }}
     />
   );
+};
+
+Loader.propTypes = {
+  color: PropTypes.oneOf(["white", "black"]).isRequired,
 };
 
 export default Loader;

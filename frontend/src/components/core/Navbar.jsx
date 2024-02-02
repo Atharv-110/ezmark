@@ -1,3 +1,4 @@
+import PropTypes from 'prop-types';
 import { logout } from "../../services/auth-service";
 import { useNavigate } from "react-router-dom";
 import Loader from "./Loader";
@@ -68,6 +69,12 @@ const Navbar = ({ role, name, email }) => {
       </div>
     </nav>
   );
+};
+
+Navbar.propTypes = {
+  role: PropTypes.string.isRequired,
+  name: PropTypes.string,
+  email: PropTypes.string,
 };
 
 export default Navbar;

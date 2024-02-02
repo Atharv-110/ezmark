@@ -1,3 +1,4 @@
+import PropTypes from "prop-types";
 import Loader from "./Loader";
 
 const MetricCard = ({ title, value, loading }) => {
@@ -12,6 +13,12 @@ const MetricCard = ({ title, value, loading }) => {
       <h1 className="text-sm md:text-2xl font-semibold">{title}</h1>
     </div>
   );
+};
+
+MetricCard.propTypes = {
+  title: PropTypes.string.isRequired,
+  value: PropTypes.oneOfType([PropTypes.string, PropTypes.number]).isRequired,
+  loading: PropTypes.bool.isRequired,
 };
 
 export default MetricCard;
