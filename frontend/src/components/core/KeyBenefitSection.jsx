@@ -1,3 +1,5 @@
+import PropTypes from 'prop-types';
+
 const benefits = [
   {
     id: 1,
@@ -33,6 +35,12 @@ const BenefitCard = ({ icon, title, desc }) => {
       <p className="text-center text-base text-gray-dark">{desc}</p>
     </div>
   );
+};
+
+BenefitCard.propTypes = {
+  icon: PropTypes.string.isRequired,
+  title: PropTypes.string.isRequired,
+  desc: PropTypes.string.isRequired,
 };
 
 const KeyBenefitSection = () => {
