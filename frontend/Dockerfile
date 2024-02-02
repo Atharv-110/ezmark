@@ -7,7 +7,7 @@ RUN addgroup -g 1001 -S appuser && adduser -u 1001 -S appuser -G appuser
 # Set the working directory to /app
 WORKDIR /app
 
-# Copy package.json and package-lock.json to the working directory
+# Copy only the package.json and package-lock.json files to the working directory
 COPY package*.json ./
 
 # Install application dependencies as the non-root user
