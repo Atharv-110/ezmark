@@ -21,7 +21,7 @@ const Navbar = ({ role, name, email }) => {
         <div className="flex items-center gap-2 max-sm:border-l-2 pl-2 md:border-r-2 pr-2">
           {name ? <button className="btn text-lg px-3 py-1 font-semibold uppercase">
             {name.substring(0, 1)}
-          </button> : <Loader />}
+          </button> : <Loader color='black'/>}
           
           <button
             onClick={handleLogout}

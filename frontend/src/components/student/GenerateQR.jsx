@@ -1,4 +1,5 @@
 import { useState, useEffect } from "react";
+import PropTypes from 'prop-types';
 import QRCode from "react-qr-code";
 import { getGenerateQR } from "../../services/get-service";
 
@@ -69,6 +70,10 @@ const GenerateQRPage = ({ setGenerateQR }) => {
       </section>
     </section>
   );
+};
+
+GenerateQRPage.propTypes = {
+  setGenerateQR: PropTypes.func.isRequired,
 };
 
 export default GenerateQRPage;

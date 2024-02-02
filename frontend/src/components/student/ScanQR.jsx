@@ -1,4 +1,5 @@
 import { useState, useEffect } from "react";
+import PropTypes from 'prop-types';
 import QrReader from "react-qr-scanner";
 import { setScanQRAPI } from "../../services/get-service";
 
@@ -84,7 +85,7 @@ const ScanQRPage = ({ setScanQR }) => {
               : "QR Not Detected!"}
           </p>
           <button
-            disabled={allData.qr_code_data ? false : true}
+            disabled={!allData.qr_code_data}
             onClick={handleMarkAttendance}
             className={
               allData.qr_code_data
@@ -98,6 +99,10 @@ const ScanQRPage = ({ setScanQR }) => {
       </section>
     </section>
   );
+};
+
+ScanQRPage.propTypes = {
+  setScanQR: PropTypes.func.isRequired,
 };
 
 export default ScanQRPage;
