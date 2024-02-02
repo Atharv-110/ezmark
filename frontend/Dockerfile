@@ -11,7 +11,7 @@ WORKDIR /app
 COPY package*.json ./
 
 # Install application dependencies as the non-root user
-RUN npm install && chown -R appuser:appuser .
+RUN npm install --ignore-scripts && chown -R appuser:appuser .
 
 # Switch to the non-root user
 USER appuser
